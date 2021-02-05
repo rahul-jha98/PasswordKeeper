@@ -1,0 +1,31 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "airbnb"
+    ],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "camelcase": "off",
+        "react/destructuring-assignment": "off",
+        "react/prop-types": "off",
+        "react/jsx-props-no-spreading": "off",
+        "import/no-unresolved": "off",
+        "react/react-in-jsx-scope": "off"
+    }
+}
