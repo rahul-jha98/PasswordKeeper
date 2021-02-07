@@ -17,7 +17,7 @@ export default ({ marginClassName }) => (
         <ListItemIcon>
           <InboxIcon />
         </ListItemIcon>
-        <ListItemText primary="All Audio" />
+        <ListItemText primary="All Accounts" />
       </ListItem>
 
     </List>
