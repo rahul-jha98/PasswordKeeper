@@ -26,6 +26,7 @@
         "react/prop-types": "off",
         "react/jsx-props-no-spreading": "off",
         "import/no-unresolved": "off",
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "no-multi-assign": "off"
     }
 }

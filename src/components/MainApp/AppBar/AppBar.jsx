@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
-import AddIcon from '@material-ui/icons/Add';
+import GitHubIcon from '@material-ui/icons/GitHub';
 
 import AppBarPopoverMenu from './AppBarPopoverMenu';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
@@ -22,6 +22,18 @@ const useStyles = makeStyles((theme) => ({
   small: {
     width: theme.spacing(4),
     height: theme.spacing(4),
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'flex',
+    },
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -46,17 +58,24 @@ export default ({ className, children }) => {
         <Toolbar>
           {children}
 
-          <Tooltip title="Add New Audio" disableHoverListener>
+          <Tooltip title="Github Repo Link" className={classes.sectionDesktop}>
             <IconButton
-              aria-label="add-audio"
+              aria-label="github repo"
               aria-controls="menu-appbar"
               color="inherit"
             >
-              <AddIcon />
+              <a
+                href="https://github.com/rahul-jha98/DrivePasswordManager"
+                rel="noopener noreferrer"
+                target="_blank"
+                style={{ color: 'inherit', textDecoration: 'none', height: 24 }}
+              >
+                <GitHubIcon />
+              </a>
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="Menu" disableHoverListener>
+          <Tooltip title="Menu">
             <IconButton
               aria-label="about"
               aria-controls="menu-appbar"
@@ -71,7 +90,10 @@ export default ({ className, children }) => {
         </Toolbar>
       </AppBar>
 
-      <AppBarPopoverMenu user={user} handlePopoverClose={handlePopoverClose} anchorEl={anchorEl} />
+      <AppBarPopoverMenu
+        {...{ user, handlePopoverClose, anchorEl }}
+        mobileToggleClass={classes.sectionMobile}
+      />
     </>
   );
 };

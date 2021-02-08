@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
 import DrawerContent from './DrawerContent/DrawerContent';
 import PasswordCardList from './PasswordCardList';
+import AddAccountDialog from './AddAccountDialog/AddAccountDialog';
 
 const drawerWidth = 240;
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(0),
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -71,6 +72,7 @@ export default (props) => {
   const { window } = props;
   const classes = useStyles();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -142,9 +144,10 @@ export default (props) => {
         <div className={classes.toolbar} />
         <PasswordCardList />
       </main>
-      <Fab aria-label="Add" className={classes.fab} color="primary">
+      <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />
       </Fab>
+      <AddAccountDialog {...{ dialogOpen, setDialogOpen }} />
     </div>
   );
 };

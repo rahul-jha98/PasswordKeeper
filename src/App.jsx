@@ -1,9 +1,22 @@
 import React from 'react';
 
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.css';
 import HomePage from './components/HomePage';
 import GoogleAuth from './APIHandler/Auth';
 import MainApp from './components/MainApp';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#145ea8',
+    },
+    secondary: {
+      main: '#ef6c00',
+    },
+
+  },
+});
 
 class App extends React.Component {
   constructor(props) {
@@ -35,4 +48,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default () => (
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>
+);

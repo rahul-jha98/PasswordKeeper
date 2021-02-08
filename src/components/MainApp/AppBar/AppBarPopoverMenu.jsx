@@ -8,12 +8,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 
+import GitHubIcon from '@material-ui/icons/GitHub';
 import DarkModeIcon from '@material-ui/icons/Brightness4';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
-export default ({ user, anchorEl, handlePopoverClose }) => {
+export default ({
+  user, anchorEl, handlePopoverClose, mobileToggleClass,
+}) => {
   const { authHandler } = React.useContext(ApiHandlerContext);
 
   return (
@@ -41,6 +44,19 @@ export default ({ user, anchorEl, handlePopoverClose }) => {
         subheader={user.getEmail()}
       />
 
+      <a
+        href="https://github.com/rahul-jha98/DrivePasswordManager"
+        rel="noopener noreferrer"
+        target="_blank"
+        style={{ color: 'inherit', textDecoration: 'none' }}
+      >
+        <MenuItem onClick={handlePopoverClose} className={mobileToggleClass}>
+          <ListItemIcon>
+            <GitHubIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Github Repo" />
+        </MenuItem>
+      </a>
       <MenuItem onClick={handlePopoverClose}>
         <ListItemIcon>
           <DarkModeIcon fontSize="small" />
