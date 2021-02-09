@@ -10,6 +10,8 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
+import MaterialIcon from '../MaterialIcon';
+
 const useStyles = makeStyles((theme) => ({
   startIcon: {
     minWidth: theme.spacing(4),
@@ -31,10 +33,7 @@ export default ({
         renderValue={(selected) => (
           <div className={classes.horizontalFlex}>
             <ListItemIcon className={classes.startIcon}>
-              <img
-                alt="icon"
-                src={`${process.env.PUBLIC_URL}/assets/${categories[selectedCategoryIdx].icon}.svg`}
-              />
+              <MaterialIcon name={categories[selectedCategoryIdx].icon} />
             </ListItemIcon>
             <Typography>{categories[selected].name}</Typography>
           </div>
@@ -45,10 +44,7 @@ export default ({
         {categories.map((category, idx) => (
           <MenuItem value={idx}>
             <ListItemIcon>
-              <img
-                alt="icon"
-                src={`${process.env.PUBLIC_URL}/assets/${category.icon}.svg`}
-              />
+              <MaterialIcon name={category.icon} />
             </ListItemIcon>
             <ListItemText primary={category.name} />
           </MenuItem>

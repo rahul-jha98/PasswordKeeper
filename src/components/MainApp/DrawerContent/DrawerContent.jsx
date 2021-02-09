@@ -1,39 +1,45 @@
 import React from 'react';
 
 import Divider from '@material-ui/core/Divider';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
-import Icon from '@material-ui/core/Icon';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-export default ({ marginClassName }) => (
-  <div>
-    <div className={marginClassName} />
-    <Divider />
-    <List>
-      <ListItem button key="all">
-        <ListItemIcon>
-          <Icon>
-            <img src="https://fonts.gstatic.com/s/i/materialiconstwotone/list/v11/24px.svg" alt="logo" />
-          </Icon>
-        </ListItemIcon>
-        <ListItemText primary="All Accounts" />
-      </ListItem>
+import CategoriesList from './CategoriesList';
+import ApiHandlerContext from '../provider/ApiHandlerContext';
 
-    </List>
-    <Divider />
-    <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        <ListItem button key={text}>
+export default ({ marginClassName }) => {
+  const { database } = React.useContext(ApiHandlerContext);
+  const [categories, setCategories] = React.useState([]);
+
+  React.useEffect(() => {
+    database.subscribeForTableUpdates('categories', (updatedList) => {
+      setCategories(updatedList);
+    });
+  }, []);
+
+  return (
+    <div>
+      <div className={marginClassName} />
+      <Divider />
+      <List>
+        <ListItem button key="all">
           <ListItemIcon>
-            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            <SvgIcon>
+              <image
+                alt="icon"
+                xlinkHref={`${process.env.PUBLIC_URL}/assets/all-list-icon.svg`}
+              />
+            </SvgIcon>
           </ListItemIcon>
-          <ListItemText primary={text} />
+          <ListItemText primary="All Accounts" />
         </ListItem>
-      ))}
-    </List>
-  </div>
-);
+
+      </List>
+      <Divider />
+      <CategoriesList categories={categories} />
+    </div>
+  );
+};
