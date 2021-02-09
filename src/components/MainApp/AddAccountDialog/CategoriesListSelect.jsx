@@ -2,12 +2,10 @@ import React from 'react';
 
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import Icon from '@material-ui/core/Icon';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import GitHubIcon from '@material-ui/icons/MailOutlineTwoTone';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -33,7 +31,10 @@ export default ({
         renderValue={(selected) => (
           <div className={classes.horizontalFlex}>
             <ListItemIcon className={classes.startIcon}>
-              <GitHubIcon />
+              <img
+                alt="icon"
+                src={`${process.env.PUBLIC_URL}/assets/${categories[selectedCategoryIdx].icon}.svg`}
+              />
             </ListItemIcon>
             <Typography>{categories[selected].name}</Typography>
           </div>
@@ -44,7 +45,10 @@ export default ({
         {categories.map((category, idx) => (
           <MenuItem value={idx}>
             <ListItemIcon>
-              <Icon />
+              <img
+                alt="icon"
+                src={`${process.env.PUBLIC_URL}/assets/${category.icon}.svg`}
+              />
             </ListItemIcon>
             <ListItemText primary={category.name} />
           </MenuItem>

@@ -29,9 +29,6 @@ export default class Database {
         ['Email', 'email', 'Email Account', 'Password'],
       ]);
     }
-    console.log(this.db.getTable('categories').getDataArray());
-    console.log(this.db.getTable('categories').columnNames);
-    console.log(this.db.getTable('categories').getData());
   }
 
   subscribeForTableUpdates = (tableName, cb) => {
@@ -54,4 +51,9 @@ export default class Database {
   }
 
   getCategories = () => this.db.getTable('categories').getData();
+
+  insertPassword = async (details) => {
+    await this.db.getTable('data').insertOne(details);
+    this.notifyDataUpdated('data');
+  }
 }

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+
+import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogActions from '@material-ui/core/DialogActions';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -26,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
   marginTop4: {
     marginTop: theme.spacing(4),
   },
-  textField: {
-    width: '48ch',
+  actions: {
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(3),
   },
 }));
 
@@ -54,7 +58,6 @@ export default ({ dialogOpen, setDialogOpen }) => {
       }
     });
     setFields(field);
-    console.log(fields);
   };
   useEffect(() => {
     populateFields(selectedCategoryIdx);
@@ -71,12 +74,34 @@ export default ({ dialogOpen, setDialogOpen }) => {
     setFields({ ...fields, [propName]: event.target.value });
   };
 
+  const handleClose = () => {
+    setDialogOpen(false);
+    populateFields(0);
+    setInfo({ name: '', note: '' });
+  };
+
+  const handleAction = () => {
+    const details = { ...info };
+    const category = categories[selectedCategoryIdx];
+    details.category = category.name;
+
+    Array.from({ length: 8 }, (_, i) => `field${i + 1}`).forEach((columnName) => {
+      if (category[columnName]) {
+        details[columnName] = fields[category[columnName]];
+      }
+    });
+    database.insertPassword(details);
+    handleClose();
+  };
+
   return (
     <Dialog
       fullScreen={fullScreen}
       open={dialogOpen}
       onClose={() => setDialogOpen(false)}
       aria-labelledby="responsive-dialog-title"
+      disableBackdropClick
+      disableEscapeKeyDown
     >
       <DialogTitle id="responsive-dialog-title">Add New Account Password</DialogTitle>
       <DialogContent className={classes.root}>
@@ -121,9 +146,19 @@ export default ({ dialogOpen, setDialogOpen }) => {
           value={info.note}
           multiline
           fullWidth
+          size="small"
+          rows={3}
           onChange={handleInfoChange('note')}
         />
       </DialogContent>
+      <DialogActions className={classes.actions}>
+        <Button autoFocus onClick={handleClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleAction} color="primary" variant="contained" autoFocus>
+          Add
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
