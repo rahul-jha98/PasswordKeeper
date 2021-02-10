@@ -5,15 +5,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
-// import ApiHandlerContext from '../../provider/ApiHandlerContext';
-// import CategoryFieldsInput from './CategoryFieldsInput';
+
+import FormItems from '../FormItems';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,13 +64,13 @@ const DialogTitle = withStyles(styles)((props) => {
 });
 
 export default ({
-  account, setSelectedIdx,
+  account, setSelectedIdx, categoriesMappings,
 }) => {
   if (!account) return null;
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
-
+  const category = categoriesMappings[account.category];
   return (
     <Dialog
       fullScreen={fullScreen}
@@ -81,26 +80,10 @@ export default ({
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle>
-        {account.name}
+        View Account Details
       </DialogTitle>
       <DialogContent className={classes.root}>
-        <Typography
-          variant="body2"
-          color="textSecondary"
-        >
-          Details
-        </Typography>
-        <TextField
-          className={classes.marginTop4}
-          id="note"
-          label="Note"
-          variant="outlined"
-          value={account.note}
-          multiline
-          fullWidth
-          size="small"
-          rows={3}
-        />
+        <FormItems {...{ account, category, classes }} variant="filled" />
       </DialogContent>
 
     </Dialog>

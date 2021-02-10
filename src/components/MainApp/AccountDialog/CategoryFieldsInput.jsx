@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
+import FilledInput from '@material-ui/core/FilledInput';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
@@ -11,31 +12,32 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const InputComponent = ({
-  label, className, fields, handleFieldsChange,
+  label, className, fields, handleFieldsChange, variant, size,
 }) => (
   <TextField
     className={className}
     id={label}
     label={label}
-    variant="outlined"
+    variant={variant}
     value={fields[label]}
     fullWidth
-    size="small"
+    size={size}
     onChange={handleFieldsChange(label)}
   />
 );
 const PasswordComponent = ({
-  label, className, fields, handleFieldsChange,
+  label, className, fields, handleFieldsChange, variant, size,
 }) => {
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
+  const Input = variant === 'filled' ? FilledInput : OutlinedInput;
+  console.log(Input);
   return (
-    <FormControl className={className} variant="outlined" size="small">
+    <FormControl className={className} size={size} variant={variant}>
       <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-      <OutlinedInput
+      <Input
         id="outlined-adornment-password"
         type={showPassword ? 'text' : 'password'}
         value={fields[label]}
@@ -59,7 +61,7 @@ const PasswordComponent = ({
 };
 
 export default ({
-  category, className, fields, handleFieldsChange,
+  fields, category, className, handleFieldsChange, variant, size,
 }) => Array.from({ length: 8 }, (_, i) => `field${i + 1}`).map((columnName) => {
   const label = category[columnName];
   if (!label) return null;
@@ -70,7 +72,7 @@ export default ({
   return (
     <Component
       {...{
-        label, fields, handleFieldsChange, className,
+        label, fields, handleFieldsChange, className, variant, size,
       }}
       key={label}
     />

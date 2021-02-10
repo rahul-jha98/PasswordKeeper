@@ -13,7 +13,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import ApiHandlerContext from '../../provider/ApiHandlerContext';
 import CategoriesListSelect from './CategoriesListSelect';
-import CategoryFieldsInput from './CategoryFieldsInput';
+import CategoryFieldsInput from '../CategoryFieldsInput';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -136,6 +136,8 @@ export default ({ dialogOpen, setDialogOpen }) => {
           category={categories[selectedCategoryIdx]}
           fields={fields}
           handleFieldsChange={handleFieldsChange}
+          variant="outlined"
+          size="small"
         />
         <TextField
           className={classes.marginTop4}
