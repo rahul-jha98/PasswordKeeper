@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import ApiHandlerContext from '../provider/ApiHandlerContext';
+import ApiHandlerContext from '../../provider/ApiHandlerContext';
 import CategoriesListSelect from './CategoriesListSelect';
 import CategoryFieldsInput from './CategoryFieldsInput';
 
@@ -76,7 +76,7 @@ export default ({ dialogOpen, setDialogOpen }) => {
 
   const handleClose = () => {
     setDialogOpen(false);
-    populateFields(0);
+    setSelectedCategoryIdx(0);
     setInfo({ name: '', note: '' });
   };
 
@@ -99,17 +99,16 @@ export default ({ dialogOpen, setDialogOpen }) => {
       fullScreen={fullScreen}
       open={dialogOpen}
       onClose={() => setDialogOpen(false)}
+      fullWidth
       aria-labelledby="responsive-dialog-title"
       disableBackdropClick
       disableEscapeKeyDown
     >
       <DialogTitle id="responsive-dialog-title">Add New Account Password</DialogTitle>
       <DialogContent className={classes.root}>
-        Select the category of the account you wish to add and enter the reuisite
-        details to store it in your Google Drive.
 
         <CategoriesListSelect
-          className={classes.marginTop4}
+          className={classes.marginTop2}
           {...{ categories, selectedCategoryIdx, setSelectedCategoryIdx }}
         />
         <TextField

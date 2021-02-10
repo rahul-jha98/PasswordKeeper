@@ -1,9 +1,12 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import MaterialIcon from '../MaterialIcon';
+
+import LoadMaterialIcon from '../LoadMaterialIcon';
+import ViewAccountDialog from '../AccountDialog/ViewAccountDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,32 +23,46 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   card: {
-    display: 'flex',
     borderRadius: theme.spacing(1),
+  },
+  flex: {
+    display: 'flex',
+    justifyContent: 'left',
   },
 }));
 
 export default ({ passwordList, categoriesMappings }) => {
   const classes = useStyles();
+  const [selectedIdx, setSelectedIdx] = React.useState(-1);
+  const handleItemClick = (selected_item_idx) => () => {
+    setSelectedIdx(selected_item_idx);
+  };
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        {passwordList.map((password) => (
-          <Grid item xs={12} sm={6} lg={4} xl={3}>
+        {passwordList.map((password, idx) => (
+          <Grid item xs={12} sm={6} lg={4} xl={3} key={password.name}>
             <Card className={classes.card}>
-              <div className={classes.icon}>
-                <MaterialIcon
-                  name={categoriesMappings[password.category].icon}
-                  style={{ fontSize: 32 }}
-                />
-
-              </div>
-              <Typography variant="h6" className={classes.text}>{password.name}</Typography>
+              <CardActionArea className={classes.flex} onClick={handleItemClick(idx)}>
+                <div className={classes.icon}>
+                  <LoadMaterialIcon
+                    name={categoriesMappings[password.category].icon}
+                    style={{ fontSize: 32 }}
+                  />
+                </div>
+                <Typography variant="h6" className={classes.text}>{password.name}</Typography>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}
       </Grid>
-    </div>
 
+      <ViewAccountDialog
+        account={passwordList[selectedIdx]}
+        categoriesMappings={categoriesMappings}
+        {...{ setSelectedIdx }}
+      />
+    </div>
   );
 };

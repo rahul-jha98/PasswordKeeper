@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
 import DrawerContent from './DrawerContent/DrawerContent';
 import PasswordCardList from './PasswordCardList';
-import AddAccountDialog from './AddAccountDialog';
+import AddAccountDialog from './AccountDialog/AddAccountDialog';
 
 const drawerWidth = 240;
 

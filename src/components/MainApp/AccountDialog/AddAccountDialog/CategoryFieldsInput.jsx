@@ -15,7 +15,7 @@ const InputComponent = ({
 }) => (
   <TextField
     className={className}
-    id="note"
+    id={label}
     label={label}
     variant="outlined"
     value={fields[label]}
@@ -68,9 +68,11 @@ export default ({
     Component = PasswordComponent;
   }
   return (
-    <Component {...{
-      label, fields, handleFieldsChange, className,
-    }}
+    <Component
+      {...{
+        label, fields, handleFieldsChange, className,
+      }}
+      key={label}
     />
   );
 });

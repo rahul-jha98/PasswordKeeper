@@ -18,7 +18,6 @@ export default class MainApp extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log(this.database);
     this.drive.getFolder(() => {
       this.drive.getSheetFile(async (sheet_file_id) => {
         this.database.setFileId(sheet_file_id);

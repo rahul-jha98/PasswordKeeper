@@ -4,7 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
-import MaterialIcon from '../MaterialIcon';
+import LoadMaterialIcon from '../LoadMaterialIcon';
 
 export default ({
   categories,
@@ -17,7 +17,7 @@ export default ({
             alt="icon"
             src={`${process.env.PUBLIC_URL}/assets/${category.icon}.svg`}
           /> */}
-          <MaterialIcon name={category.icon} />
+          <LoadMaterialIcon name={category.icon} />
         </ListItemIcon>
         <ListItemText primary={category.name} />
       </ListItem>

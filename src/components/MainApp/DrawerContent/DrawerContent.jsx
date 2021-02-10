@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import ListIcon from '@material-ui/icons/List';
 
 import CategoriesList from './CategoriesList';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
@@ -27,12 +27,7 @@ export default ({ marginClassName }) => {
       <List>
         <ListItem button key="all">
           <ListItemIcon>
-            <SvgIcon>
-              <image
-                alt="icon"
-                xlinkHref={`${process.env.PUBLIC_URL}/assets/all-list-icon.svg`}
-              />
-            </SvgIcon>
+            <ListIcon />
           </ListItemIcon>
           <ListItemText primary="All Accounts" />
         </ListItem>
