@@ -43,7 +43,7 @@ export default class Database {
     cb(this.getDataWithIndex(tableName));
   }
 
-  notifyDataUpdated = (tableName) => {
+  notifyDataChanged = (tableName) => {
     if (this.callbacksList[tableName]) {
       const updatedData = this.getDataWithIndex(tableName);
       this.callbacksList[tableName].forEach((cb) => {
@@ -56,9 +56,14 @@ export default class Database {
 
   insertPassword = async (details) => {
     await this.db.getTable('data').insertOne(details);
-    this.notifyDataUpdated('data');
+    this.notifyDataChanged('data');
   }
 
   getDataWithIndex = (tableName) => this.db.getTable(tableName).getData()
     .map((entry, idx) => ({ ...entry, row_idx: idx }));
+
+  deleteAccountAtIndex = async (row_idx) => {
+    await this.db.getTable('data').deleteRow(row_idx);
+    this.notifyDataChanged('data');
+  }
 }

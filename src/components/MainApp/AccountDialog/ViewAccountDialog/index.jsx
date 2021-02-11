@@ -13,6 +13,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 
 import FormItems from '../FormItems';
+import ApiHandlerContext from '../../provider/ApiHandlerContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,9 +47,9 @@ const styles = (theme) => ({
   },
 });
 
-const DialogTitle = withStyles(styles)((props) => {
+const DialogTitleWithEditAndDelete = withStyles(styles)((props) => {
   const {
-    children, classes, onClose, ...other
+    children, classes, onClose, onDeleteClicked, ...other
   } = props;
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
@@ -56,7 +57,7 @@ const DialogTitle = withStyles(styles)((props) => {
       <IconButton aria-label="edit" className={classes.icon} onClick={onClose}>
         <EditOutlinedIcon />
       </IconButton>
-      <IconButton aria-label="delete" className={classes.icon} onClick={onClose}>
+      <IconButton aria-label="delete" className={classes.icon} onClick={onDeleteClicked}>
         <DeleteOutlinedIcon />
       </IconButton>
     </MuiDialogTitle>
@@ -71,21 +72,32 @@ export default ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
   const category = categoriesMappings[account.category];
+
+  const { database } = React.useContext(ApiHandlerContext);
+
+  const closeDialog = () => {
+    setSelectedIdx(-1);
+  };
+
+  const onDeleteClicked = () => {
+    database.deleteAccountAtIndex(account.row_idx);
+    closeDialog();
+  };
+
   return (
     <Dialog
       fullScreen={fullScreen}
       open
       fullWidth
-      onClose={() => setSelectedIdx(-1)}
+      onClose={closeDialog}
       aria-labelledby="responsive-dialog-title"
     >
-      <DialogTitle>
+      <DialogTitleWithEditAndDelete onDeleteClicked={onDeleteClicked}>
         View Account Details
-      </DialogTitle>
+      </DialogTitleWithEditAndDelete>
       <DialogContent className={classes.root}>
         <FormItems {...{ account, category, classes }} variant="filled" />
       </DialogContent>
-
     </Dialog>
   );
 };
