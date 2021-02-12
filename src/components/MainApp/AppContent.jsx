@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from './AppBar';
 import DrawerContent from './DrawerContent/DrawerContent';
 import PasswordCardList from './PasswordCardList';
-import AddAccountDialog from './AccountDialog/AddAccountDialog';
+import AccountDialog, { Mode } from './AccountDialog';
 
 const drawerWidth = 240;
 
@@ -147,7 +147,7 @@ export default (props) => {
       <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />
       </Fab>
-      <AddAccountDialog {...{ dialogOpen, setDialogOpen }} />
+      <AccountDialog {...{ dialogOpen, setDialogOpen }} mode={Mode.NEW_ACCOUNT} />
     </div>
   );
 };

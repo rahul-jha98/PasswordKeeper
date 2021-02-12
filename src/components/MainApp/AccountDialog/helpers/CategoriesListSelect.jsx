@@ -18,28 +18,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default ({
-  categories, selectedCategoryIdx, setSelectedCategoryIdx, className,
+  text, onTextChange, className, categoriesMappings, disabled,
 }) => {
   const classes = useStyles();
   return (
-    <FormControl variant="outlined" fullWidth className={className} size="small">
+    <FormControl variant="outlined" fullWidth className={className} disabled={disabled} size="small">
       <InputLabel id="category-label">Account Cateogry</InputLabel>
       <Select
         labelId="category-label"
-        value={selectedCategoryIdx}
+        value={text}
         renderValue={(selected) => (
           <div className="flex">
             <ListItemIcon className={classes.startIcon}>
-              <LoadMaterialIcon name={categories[selectedCategoryIdx].icon} />
+              <LoadMaterialIcon name={categoriesMappings[selected].icon} />
             </ListItemIcon>
-            <Typography>{categories[selected].name}</Typography>
+            <Typography>{categoriesMappings[selected].name}</Typography>
           </div>
         )}
-        onChange={(event) => { setSelectedCategoryIdx(event.target.value); }}
+        onChange={onTextChange}
         label="Account Category"
       >
-        {categories.map((category, idx) => (
-          <MenuItem value={idx}>
+        {Object.values(categoriesMappings).map((category) => (
+          <MenuItem value={category.name}>
             <ListItemIcon>
               <LoadMaterialIcon name={category.icon} />
             </ListItemIcon>

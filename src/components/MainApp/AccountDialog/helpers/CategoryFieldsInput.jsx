@@ -12,36 +12,36 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const InputComponent = ({
-  label, className, fields, handleFieldsChange, variant, size,
+  label, className, text, onTextChange, variant, size,
 }) => (
   <TextField
     className={className}
     id={label}
     label={label}
     variant={variant}
-    value={fields[label]}
+    value={text}
     fullWidth
     size={size}
-    onChange={handleFieldsChange(label)}
+    onChange={onTextChange}
   />
 );
 const PasswordComponent = ({
-  label, className, fields, handleFieldsChange, variant, size,
+  className, text, onTextChange, variant, size,
 }) => {
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const Input = variant === 'filled' ? FilledInput : OutlinedInput;
-  console.log(Input);
+
   return (
     <FormControl className={className} size={size} variant={variant}>
       <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
       <Input
         id="outlined-adornment-password"
         type={showPassword ? 'text' : 'password'}
-        value={fields[label]}
-        onChange={handleFieldsChange(label)}
+        value={text}
+        onChange={onTextChange}
         endAdornment={(
           <InputAdornment position="end">
             <IconButton
@@ -61,7 +61,7 @@ const PasswordComponent = ({
 };
 
 export default ({
-  fields, category, className, handleFieldsChange, variant, size,
+  account, category, className, handleTextChange, variant, size,
 }) => Array.from({ length: 8 }, (_, i) => `field${i + 1}`).map((columnName) => {
   const label = category[columnName];
   if (!label) return null;
@@ -72,9 +72,11 @@ export default ({
   return (
     <Component
       {...{
-        label, fields, handleFieldsChange, className, variant, size,
+        label, columnName, className, variant, size,
       }}
       key={label}
+      text={account[columnName]}
+      onTextChange={handleTextChange(columnName)}
     />
   );
 });

@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 import LoadMaterialIcon from '../LoadMaterialIcon';
-import ViewAccountDialog from '../AccountDialog/ViewAccountDialog';
+import AccountDialog, { Mode } from '../AccountDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +34,11 @@ const useStyles = makeStyles((theme) => ({
 export default ({ passwordList, categoriesMappings }) => {
   const classes = useStyles();
   const [selectedIdx, setSelectedIdx] = React.useState(-1);
+  const [dialogOpen, setDialogOpen] = React.useReducer((val) => !val, false);
+
   const handleItemClick = (selected_item_idx) => () => {
     setSelectedIdx(selected_item_idx);
+    setDialogOpen(true);
   };
 
   return (
@@ -58,10 +61,11 @@ export default ({ passwordList, categoriesMappings }) => {
         ))}
       </Grid>
 
-      <ViewAccountDialog
+      <AccountDialog
         account={passwordList[selectedIdx]}
         categoriesMappings={categoriesMappings}
-        {...{ setSelectedIdx }}
+        {...{ dialogOpen, setDialogOpen }}
+        mode={Mode.EXISTING_ACCOUNT}
       />
     </div>
   );
