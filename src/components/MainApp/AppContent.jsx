@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   fab: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(4),
     right: theme.spacing(4),
     [theme.breakpoints.down('xs')]: {

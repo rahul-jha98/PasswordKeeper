@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import FormItems from './helpers/FormItems';
 
 export default ({
-  database, classes, closeDialog,
+  database, classes, closeDialog, setIsDialogCancellable,
 }) => {
   const categories = database.getCategories();
   const categoriesMappings = {};
@@ -21,6 +21,8 @@ export default ({
   Array.from({ length: 8 }, (_, i) => `field${i + 1}`).forEach((column) => {
     initialAccountState[column] = '';
   });
+
+  setIsDialogCancellable(false);
 
   const [nameError] = useState('');
   const [account, setAccount] = useState(initialAccountState);

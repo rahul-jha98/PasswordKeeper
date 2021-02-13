@@ -66,4 +66,8 @@ export default class Database {
     await this.db.getTable('data').deleteRow(row_idx);
     this.notifyDataChanged('data');
   }
+
+  updateAccount = async (updatedAccount) => {
+    await this.db.getTable('data').updateRow(updatedAccount.row_idx, updatedAccount);
+  }
 }

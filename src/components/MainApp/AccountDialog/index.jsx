@@ -47,7 +47,7 @@ export default (props) => {
     setDialogOpen(false);
   };
 
-  const [isDialogCancellable, setIsDialogCancellable] = React.useState(Boolean(props.account));
+  const [isDialogCancellable, setIsDialogCancellable] = React.useState(true);
 
   const DialogContentComponent = (mode === Mode.NEW_ACCOUNT)
     ? NewAccountDialogContent
@@ -59,8 +59,8 @@ export default (props) => {
       fullWidth
       onClose={closeDialog}
       aria-labelledby="responsive-dialog-title"
-      disableBackdropClick={isDialogCancellable}
-      disableEscapeKeyDown={isDialogCancellable}
+      disableBackdropClick={!isDialogCancellable}
+      disableEscapeKeyDown={!isDialogCancellable}
     >
       <DialogContentComponent
         {...{
