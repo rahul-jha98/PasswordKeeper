@@ -2,8 +2,8 @@ import React from 'react';
 
 import Snackbar from '@material-ui/core/Snackbar';
 
-import AppContent from './AppContent';
-import LoadingScreen from './LoadingScreen';
+import AppLayout from './AppLayout';
+import MasterKeyScreen from './MasterKeyScreen';
 
 import ApiHandlerProvider from './provider/ApiHandlerProvider';
 import Drive from '../../APIHandler/Drive';
@@ -14,7 +14,9 @@ export default class MainApp extends React.Component {
     super(props);
     this.drive = new Drive(this.props.authHandler);
     this.database = new SheetsDatabase();
-    this.state = { loaded: false, message: '' };
+    this.state = {
+      loaded: false, message: '', action: null,
+    };
   }
 
   componentDidMount = () => {
@@ -22,14 +24,23 @@ export default class MainApp extends React.Component {
       this.drive.getSheetFile(async (sheet_file_id) => {
         this.database.setFileId(sheet_file_id);
         this.database.setAccessToken(this.props.authHandler.getAuthToken());
-        await this.database.initialize();
-        this.setState({ loaded: true });
+        const shouldInitialize = await this.database.connect();
+
+        if (shouldInitialize) {
+          this.setState({ action: 'add' });
+        } else {
+          this.setState({ action: 'verify' });
+        }
       });
     });
   }
 
   showToast = (message) => {
     this.setState({ message });
+  }
+
+  onPasswordLoaded = () => {
+    this.setState({ loaded: true });
   }
 
   render() {
@@ -41,8 +52,15 @@ export default class MainApp extends React.Component {
           database={this.database}
         >
           { this.state.loaded
-            ? <AppContent />
-            : <LoadingScreen message="Connecting to Google Drive" /> }
+            ? <AppLayout />
+            : (
+              <MasterKeyScreen
+                message="Connecting to Google Drive"
+                action={this.state.action}
+                database={this.database}
+                onPasswordLoaded={this.onPasswordLoaded}
+              />
+            ) }
         </ApiHandlerProvider>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}

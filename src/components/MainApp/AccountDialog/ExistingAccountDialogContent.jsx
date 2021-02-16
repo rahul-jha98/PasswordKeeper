@@ -96,7 +96,7 @@ export default ({
           Cancel
         </Button>
         <Button onClick={updateAccount} color="primary" variant="contained" autoFocus>
-          Add
+          Update
         </Button>
       </DialogActions>
     );

@@ -11,26 +11,32 @@ export default class Database {
     this.db.useAccessToken(token);
   }
 
-  initialize = async () => {
+  connect = async () => {
     await this.db.sync();
 
-    if (this.db.tablesByIndex[0].title === 'Sheet1') {
-      const fields = [1, 2, 3, 4, 5, 6, 7, 8].map((x) => `field${x}`);
-      const dataTableColumns = ['name', 'note', 'category', ...fields];
-      await this.db.addTable('data', dataTableColumns);
+    return this.db.tablesByIndex[0].title === 'Sheet1';
+  }
 
-      const categoryTableColumns = ['name', 'icon', ...fields];
-      await this.db.addTable('categories', categoryTableColumns);
+  initialize = async (masterKey) => {
+    const fields = Array.from({ length: 6 }, (_, i) => `field${i}`);
+    const dataTableColumns = ['name', 'note', 'category', ...fields];
+    await this.db.addTable('data', dataTableColumns);
 
-      await this.db.dropTable('Sheet1');
+    const categoryTableColumns = ['name', 'icon', ...fields];
+    await this.db.addTable('categories', categoryTableColumns);
 
-      await this.db.getTable('categories').insertMany([
-        ['Web Account', 'public', 'Website Link', 'Username', 'Password'],
-        ['Email', 'mail', 'Email Account', 'Password'],
-        ['Credit Card', 'card', 'Card Number', 'Expiry Date', 'CVV'],
-        ['Shopping Website', 'shop', 'E-Mail', 'Phone Number', 'Password'],
-      ]);
-    }
+    await this.db.addTable('masterpassword', ['password']);
+    this.db.getTable('masterpassword').insertOne([masterKey]);
+
+    await this.db.getTable('categories').insertMany([
+      ['Web Account', 'public', 'Website Link', 'Username', 'Password'],
+      ['Email', 'mail', 'Email Account', 'Password'],
+      ['Credit Card', 'card', 'Card Number', 'Expiry Date', 'CVV'],
+      ['Shopping Website', 'shop', 'E-Mail', 'Phone Number', 'Password'],
+    ]);
+
+    await this.db.dropTable('Sheet1');
+    this.db.getTable('masterpassword').shrinkSheetToFitTable();
   }
 
   subscribeForTableUpdates = (tableName, cb) => {
@@ -70,4 +76,6 @@ export default class Database {
   updateAccount = async (updatedAccount) => {
     await this.db.getTable('data').updateRow(updatedAccount.row_idx, updatedAccount);
   }
+
+  verifyPassword = (password) => this.db.getTable('masterpassword').getRow(0).password === password
 }
