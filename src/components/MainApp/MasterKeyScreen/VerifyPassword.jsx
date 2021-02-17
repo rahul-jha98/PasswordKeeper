@@ -36,7 +36,8 @@ export default ({
         toggleEnabled();
         setErrorMessage('Password Entered is Incorrect');
       }
-    } catch {
+    } catch (err) {
+      console.log(err);
       setErrorMessage('Error verifying password. Try again later');
     }
   };

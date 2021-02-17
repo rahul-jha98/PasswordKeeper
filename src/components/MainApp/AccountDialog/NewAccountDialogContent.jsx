@@ -18,7 +18,7 @@ export default ({
 
   const initialAccountState = { name: '', note: '', category: categories[0].name };
 
-  Array.from({ length: 8 }, (_, i) => `field${i + 1}`).forEach((column) => {
+  Array.from({ length: 5 }, (_, i) => `field${i + 1}`).forEach((column) => {
     initialAccountState[column] = '';
   });
 

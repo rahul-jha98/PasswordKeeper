@@ -15,7 +15,7 @@ export default class MainApp extends React.Component {
     this.drive = new Drive(this.props.authHandler);
     this.database = new SheetsDatabase();
     this.state = {
-      loaded: false, message: '', action: null,
+      loaded: false, toast: '', action: null, message: 'Connecting to Google Drive',
     };
   }
 
@@ -35,12 +35,12 @@ export default class MainApp extends React.Component {
     });
   }
 
-  showToast = (message) => {
-    this.setState({ message });
+  showToast = (toast) => {
+    this.setState({ toast });
   }
 
   onPasswordLoaded = () => {
-    this.setState({ loaded: true });
+    this.setState({ loaded: true, action: null, message: 'Loading Data from Sheet' });
   }
 
   render() {
@@ -55,7 +55,7 @@ export default class MainApp extends React.Component {
             ? <AppLayout />
             : (
               <MasterKeyScreen
-                message="Connecting to Google Drive"
+                message={this.state.message}
                 action={this.state.action}
                 database={this.database}
                 onPasswordLoaded={this.onPasswordLoaded}
@@ -64,11 +64,11 @@ export default class MainApp extends React.Component {
         </ApiHandlerProvider>
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          open={Boolean(this.state.message)}
+          open={Boolean(this.state.toast)}
           autoHideDuration={2000}
-          message={this.state.message}
-          onClose={() => { this.setState({ message: '' }); }}
-          key={this.state.message}
+          message={this.state.toast}
+          onClose={() => { this.setState({ toast: '' }); }}
+          key={this.state.toast}
         />
       </>
     );

@@ -35,7 +35,7 @@ const PasswordComponent = ({
   const Input = variant === 'filled' ? FilledInput : OutlinedInput;
 
   return (
-    <FormControl className={className} size={size} variant={variant}>
+    <FormControl className={className} size={size} variant={variant} fullWidth>
       <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
       <Input
         id="outlined-adornment-password"
@@ -62,7 +62,7 @@ const PasswordComponent = ({
 
 export default ({
   account, category, className, handleTextChange, variant, size,
-}) => Array.from({ length: 8 }, (_, i) => `field${i + 1}`).map((columnName) => {
+}) => Array.from({ length: 5 }, (_, i) => `field${i + 1}`).map((columnName) => {
   const label = category[columnName];
   if (!label) return null;
   let Component = InputComponent;

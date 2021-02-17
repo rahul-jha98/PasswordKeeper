@@ -1,7 +1,12 @@
 import SheetsDatabase from 'sheets-database';
+import EncryptionHandler from './EncryptionHandler';
 
 export default class Database {
-  callbacksList = {};
+  constructor() {
+    this.callbacksList = {};
+    this.encryptionHander = new EncryptionHandler();
+    this.fields = Array.from({ length: 5 }, (_, i) => `field${i + 1}`);
+  }
 
   setFileId = (sheetsId) => {
     this.db = new SheetsDatabase(sheetsId);
@@ -18,25 +23,25 @@ export default class Database {
   }
 
   initialize = async (masterKey) => {
-    const fields = Array.from({ length: 6 }, (_, i) => `field${i}`);
-    const dataTableColumns = ['name', 'note', 'category', ...fields];
+    this.encryptionHander.setKey(masterKey);
+
+    const dataTableColumns = ['name', 'note', 'category', ...this.fields];
     await this.db.addTable('data', dataTableColumns);
 
-    const categoryTableColumns = ['name', 'icon', ...fields];
+    const categoryTableColumns = ['name', 'icon', ...this.fields];
     await this.db.addTable('categories', categoryTableColumns);
 
-    await this.db.addTable('masterpassword', ['password']);
-    this.db.getTable('masterpassword').insertOne([masterKey]);
+    await this.db.addTable('masterpassword', ['password'], 2);
+    this.db.getTable('masterpassword').insertOne([this.encryptionHander.encrypt('nowyouseeme')]);
 
     await this.db.getTable('categories').insertMany([
       ['Web Account', 'public', 'Website Link', 'Username', 'Password'],
       ['Email', 'mail', 'Email Account', 'Password'],
       ['Credit Card', 'card', 'Card Number', 'Expiry Date', 'CVV'],
       ['Shopping Website', 'shop', 'E-Mail', 'Phone Number', 'Password'],
-    ]);
+    ], false);
 
     await this.db.dropTable('Sheet1');
-    this.db.getTable('masterpassword').shrinkSheetToFitTable();
   }
 
   subscribeForTableUpdates = (tableName, cb) => {
@@ -61,7 +66,13 @@ export default class Database {
   getCategories = () => this.db.getTable('categories').getData();
 
   insertPassword = async (details) => {
-    await this.db.getTable('data').insertOne(details);
+    const encryptedDetails = { ...details };
+    this.fields.forEach((field) => {
+      if (encryptedDetails[field].length) {
+        encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
+      }
+    });
+    await this.db.getTable('data').insertOne(encryptedDetails);
     this.notifyDataChanged('data');
   }
 
@@ -77,5 +88,25 @@ export default class Database {
     await this.db.getTable('data').updateRow(updatedAccount.row_idx, updatedAccount);
   }
 
-  verifyPassword = (password) => this.db.getTable('masterpassword').getRow(0).password === password
+  verifyPassword = (password) => {
+    const savedEncrypted = this.db.getTable('masterpassword').getRow(0).password;
+
+    if (this.encryptionHander.validate('nowyouseeme', password, savedEncrypted)) {
+      this.encryptionHander.setKey(password);
+      return true;
+    }
+    return false;
+  }
+
+  getDecryptedAccount = (encryptedDetails) => {
+    console.log(encryptedDetails);
+    if (!encryptedDetails) { return null; }
+    const decryptedDetails = { ...encryptedDetails };
+    this.fields.forEach((field) => {
+      if (decryptedDetails[field]) {
+        decryptedDetails[field] = this.encryptionHander.decrypt(decryptedDetails[field]);
+      }
+    });
+    return decryptedDetails;
+  }
 }

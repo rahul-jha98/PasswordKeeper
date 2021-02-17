@@ -35,7 +35,7 @@ export default ({
 
       await database.initialize(password);
       onPasswordLoaded();
-    } catch {
+    } catch (err) {
       setErrorMessage('Network Error. Try again later');
     }
   };

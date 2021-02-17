@@ -21,5 +21,11 @@ export default () => {
     });
   }, []);
 
-  return <PasswordCardListUI passwordList={passwordList} categoriesMappings={categoriesMappings} />;
+  return (
+    <PasswordCardListUI
+      passwordList={passwordList}
+      categoriesMappings={categoriesMappings}
+      database={database}
+    />
+  );
 };

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ passwordList, categoriesMappings }) => {
+export default ({ passwordList, categoriesMappings, database }) => {
   const classes = useStyles();
   const [selectedIdx, setSelectedIdx] = React.useState(-1);
   const [dialogOpen, setDialogOpen] = React.useReducer((val) => !val, false);
@@ -62,7 +62,7 @@ export default ({ passwordList, categoriesMappings }) => {
       </Grid>
 
       <AccountDialog
-        account={passwordList[selectedIdx]}
+        account={database.getDecryptedAccount(passwordList[selectedIdx])}
         categoriesMappings={categoriesMappings}
         {...{ dialogOpen, setDialogOpen }}
         mode={Mode.EXISTING_ACCOUNT}
