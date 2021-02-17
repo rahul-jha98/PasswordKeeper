@@ -8,15 +8,18 @@ import LoadMaterialIcon from '../LoadMaterialIcon';
 
 export default ({
   categories,
+  selectedIndex,
+  handleListItemClick,
 }) => (
   <List>
-    {categories.map((category) => (
-      <ListItem button key={category.name}>
+    {categories.map((category, idx) => (
+      <ListItem
+        button
+        key={category.name}
+        selected={selectedIndex === idx}
+        onClick={(event) => handleListItemClick(event, idx)}
+      >
         <ListItemIcon>
-          {/* <img
-            alt="icon"
-            src={`${process.env.PUBLIC_URL}/assets/${category.icon}.svg`}
-          /> */}
           <LoadMaterialIcon name={category.icon} />
         </ListItemIcon>
         <ListItemText primary={category.name} />

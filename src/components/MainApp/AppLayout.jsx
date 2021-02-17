@@ -74,6 +74,8 @@ export default (props) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -98,7 +100,11 @@ export default (props) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const drawerContent = (
-    <DrawerContent marginClassName={classes.toolbar} />
+    <DrawerContent
+      marginClassName={classes.toolbar}
+      selectedIndex={selectedIndex}
+      setSelectedIndex={setSelectedIndex}
+    />
   );
 
   const navigation = (
@@ -142,7 +148,7 @@ export default (props) => {
       {navigation}
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <PasswordCardList />
+        <PasswordCardList selectedIndex={selectedIndex} />
       </main>
       <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />

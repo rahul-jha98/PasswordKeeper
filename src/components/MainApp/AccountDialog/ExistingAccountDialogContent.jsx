@@ -18,7 +18,7 @@ const styles = (theme) => ({
   root: {
     margin: 0,
     padding: `${theme.spacing(3)} ${theme.spacing(1)}`,
-    paddingRight: 6,
+    paddingRight: 12,
     display: 'flex',
     alignItems: 'center',
   },

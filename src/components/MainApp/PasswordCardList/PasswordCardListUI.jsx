@@ -37,8 +37,10 @@ export default ({ passwordList, categoriesMappings, database }) => {
   const [dialogOpen, setDialogOpen] = React.useReducer((val) => !val, false);
 
   const handleItemClick = (selected_item_idx) => () => {
-    setSelectedIdx(selected_item_idx);
-    setDialogOpen(true);
+    setTimeout(() => {
+      setSelectedIdx(selected_item_idx);
+      setDialogOpen(true);
+    }, 200);
   };
 
   return (

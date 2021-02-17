@@ -10,7 +10,7 @@ import ListIcon from '@material-ui/icons/List';
 import CategoriesList from './CategoriesList';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
-export default ({ marginClassName }) => {
+export default ({ marginClassName, selectedIndex, setSelectedIndex }) => {
   const { database } = React.useContext(ApiHandlerContext);
   const [categories, setCategories] = React.useState([]);
 
@@ -20,12 +20,23 @@ export default ({ marginClassName }) => {
     });
   }, []);
 
+  const handleListItemClick = (event, index) => {
+    if (index !== selectedIndex) {
+      setSelectedIndex(index);
+    }
+  };
+
   return (
     <div>
       <div className={marginClassName} />
       <Divider />
       <List>
-        <ListItem button key="all">
+        <ListItem
+          button
+          key="all"
+          selected={selectedIndex === -1}
+          onClick={(event) => handleListItemClick(event, -1)}
+        >
           <ListItemIcon>
             <ListIcon />
           </ListItemIcon>
@@ -34,7 +45,7 @@ export default ({ marginClassName }) => {
 
       </List>
       <Divider />
-      <CategoriesList categories={categories} />
+      <CategoriesList {...{ categories, selectedIndex, handleListItemClick }} />
     </div>
   );
 };
