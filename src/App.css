@@ -40,3 +40,8 @@
 .flex {
   display: flex
 }
+
+.marginHorizontal-4 {
+  margin-left: 4px;
+  margin-right: 4px;
+}

@@ -105,8 +105,7 @@ export default (props) => {
   );
 
   const navigation = (
-    <nav className={classes.drawer} aria-label="mailbox folders">
-      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+    <nav className={classes.drawer} aria-label="categories">
       <Hidden mdUp implementation="css">
         <Drawer
           container={container}

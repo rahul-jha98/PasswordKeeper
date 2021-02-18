@@ -85,15 +85,12 @@ export default class Database {
   }
 
   updateAccount = async (updatedAccount) => {
-    console.log(updatedAccount);
     const encryptedDetails = { ...updatedAccount };
     this.fields.forEach((field) => {
       if (encryptedDetails[field] && encryptedDetails[field].length) {
         encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
       }
     });
-    console.log(this.db.getTable('data').columnNames);
-    console.log(encryptedDetails);
     await this.db.getTable('data').updateRow(updatedAccount.row_idx, encryptedDetails);
     this.notifyDataChanged('data');
   }
@@ -120,7 +117,6 @@ export default class Database {
       }
     });
     if (!decryptedDetails.note) decryptedDetails.note = '';
-    console.log(decryptedDetails);
     return decryptedDetails;
   }
 }
