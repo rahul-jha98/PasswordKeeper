@@ -32,14 +32,14 @@ export default class Database {
     await this.db.addTable('categories', categoryTableColumns);
 
     await this.db.addTable('masterpassword', ['password'], 2);
-    this.db.getTable('masterpassword').insertOne([this.encryptionHander.encrypt('nowyouseeme')]);
+    this.db.getTable('masterpassword').insertOne([this.encryptionHander.encrypt('nowyouseeme')], false);
 
     await this.db.getTable('categories').insertMany([
-      ['Web Account', 'public', 'Website Link', 'Username', 'Password'],
-      ['Email', 'mail', 'Email Account', 'Password'],
-      ['Credit Card', 'card', 'Card Number', 'Expiry Date', 'CVV'],
-      ['Shopping Website', 'shop', 'E-Mail', 'Phone Number', 'Password'],
-    ], false);
+      ['Web Account', 'public', '@-Website Link', '$-Username', '*-Password'],
+      ['Email', 'mail', '$-Email Account', '*-Password'],
+      ['Credit Card', 'card', '$-Card Number', '$-Expiry Date', '*-CVV'],
+      ['Shopping Website', 'shop', '$-E-Mail', '$-Phone Number', '*-Password'],
+    ]);
 
     await this.db.dropTable('Sheet1');
   }
@@ -85,7 +85,17 @@ export default class Database {
   }
 
   updateAccount = async (updatedAccount) => {
-    await this.db.getTable('data').updateRow(updatedAccount.row_idx, updatedAccount);
+    console.log(updatedAccount);
+    const encryptedDetails = { ...updatedAccount };
+    this.fields.forEach((field) => {
+      if (encryptedDetails[field] && encryptedDetails[field].length) {
+        encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
+      }
+    });
+    console.log(this.db.getTable('data').columnNames);
+    console.log(encryptedDetails);
+    await this.db.getTable('data').updateRow(updatedAccount.row_idx, encryptedDetails);
+    this.notifyDataChanged('data');
   }
 
   verifyPassword = (password) => {
@@ -99,14 +109,18 @@ export default class Database {
   }
 
   getDecryptedAccount = (encryptedDetails) => {
-    console.log(encryptedDetails);
     if (!encryptedDetails) { return null; }
     const decryptedDetails = { ...encryptedDetails };
+
     this.fields.forEach((field) => {
       if (decryptedDetails[field]) {
-        decryptedDetails[field] = this.encryptionHander.decrypt(decryptedDetails[field]);
+        decryptedDetails[field] = this.encryptionHander.decrypt(encryptedDetails[field]);
+      } else {
+        decryptedDetails[field] = '';
       }
     });
+    if (!decryptedDetails.note) decryptedDetails.note = '';
+    console.log(decryptedDetails);
     return decryptedDetails;
   }
 }

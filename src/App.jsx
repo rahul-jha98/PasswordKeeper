@@ -16,6 +16,11 @@ const theme = createMuiTheme({
     },
 
   },
+  typography: {
+    fontFamily: [
+      'Work Sans',
+    ].join(','),
+  },
 });
 
 class App extends React.Component {

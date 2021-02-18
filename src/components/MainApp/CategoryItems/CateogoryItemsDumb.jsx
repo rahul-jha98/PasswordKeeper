@@ -31,7 +31,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ passwordList, categoriesMappings, database }) => {
+export default ({
+  passwordList, categoriesMappings, database, heading,
+}) => {
   const classes = useStyles();
   const [selectedIdx, setSelectedIdx] = React.useState(-1);
   const [dialogOpen, setDialogOpen] = React.useReducer((val) => !val, false);
@@ -46,6 +48,9 @@ export default ({ passwordList, categoriesMappings, database }) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography variant="h5">{heading}</Typography>
+        </Grid>
         {passwordList.map((password, idx) => (
           <Grid item xs={12} sm={6} lg={4} xl={3} key={password.name}>
             <Card className={classes.card}>

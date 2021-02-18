@@ -51,7 +51,9 @@ export default ({
   account, categoriesMappings, setIsDialogCancellable, classes, database, closeDialog,
 }) => {
   if (!account) return null;
-  const [localAccount, setLocalAccount] = React.useState(account);
+  const initialAccountState = { ...account };
+
+  const [localAccount, setLocalAccount] = React.useState(initialAccountState);
 
   const [editMode, toggleEditMode] = React.useReducer((value) => !value, false);
 
@@ -92,7 +94,7 @@ export default ({
     };
     Actions = (
       <DialogActions className={classes.actions}>
-        <Button autoFocus onClick={toggleEditMode} color="primary">
+        <Button autoFocus onClick={() => { toggleEditMode(); setLocalAccount(initialAccountState); }} color="primary">
           Cancel
         </Button>
         <Button onClick={updateAccount} color="primary" variant="contained" autoFocus>

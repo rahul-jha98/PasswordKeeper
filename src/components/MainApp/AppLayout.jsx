@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import AppBar from './AppBar';
 import DrawerContent from './DrawerContent/DrawerContent';
-import PasswordCardList from './PasswordCardList';
+import CategoryItems from './CategoryItems';
 import AccountDialog, { Mode } from './AccountDialog';
 
 const drawerWidth = 240;
@@ -148,7 +148,7 @@ export default (props) => {
       {navigation}
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <PasswordCardList selectedIndex={selectedIndex} />
+        <CategoryItems selectedIndex={selectedIndex} />
       </main>
       <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />

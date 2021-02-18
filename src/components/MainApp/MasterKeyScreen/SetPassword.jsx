@@ -51,7 +51,7 @@ export default ({
       disableBackdropClick
       disableEscapeKeyDown
     >
-      <DialogTitle id="responsive-dialog-title">Enter Master Password</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">Set Master Password</DialogTitle>
       <DialogContent>
         Set the master password that will be used to encrypt the passwords stored.
         <FormControl error={Boolean(errorMessage)} size="small" fullWidth variant="outlined" style={{ marginTop: 20 }}>

@@ -11,9 +11,7 @@ export default ({
   account, setAccount, classes, mode, nameError, categoriesMappings,
 }) => {
   const category = categoriesMappings[account.category];
-
   let onTextChange = () => () => {
-
   };
 
   if (mode !== 'view') {
@@ -46,6 +44,7 @@ export default ({
       disabled={mode === 'edit'}
     />
   );
+
   return (
     <>
       {CategoryInput}

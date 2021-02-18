@@ -6,7 +6,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListIcon from '@material-ui/icons/List';
-
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
 import CategoriesList from './CategoriesList';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
@@ -46,6 +47,14 @@ export default ({ marginClassName, selectedIndex, setSelectedIndex }) => {
       </List>
       <Divider />
       <CategoriesList {...{ categories, selectedIndex, handleListItemClick }} />
+      <Button
+        fullWidth
+        startIcon={<AddIcon />}
+        style={{ marginTop: 8 }}
+      >
+        Add New Category
+
+      </Button>
     </div>
   );
 };
