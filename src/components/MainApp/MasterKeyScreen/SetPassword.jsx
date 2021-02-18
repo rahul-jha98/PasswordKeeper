@@ -13,10 +13,17 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Typography from '@material-ui/core/Typography';
+
+import { useTheme } from '@material-ui/core/styles';
 
 export default ({
   database, onPasswordLoaded,
 }) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+
   const [password, setPassword] = React.useState('');
   const [retypedPassword, setRetypedPassword] = React.useState('');
   const [enabled, toggleEnabled] = React.useReducer((val) => !val, true);
@@ -50,10 +57,13 @@ export default ({
       fullWidth
       disableBackdropClick
       disableEscapeKeyDown
+      fullScreen={fullScreen}
     >
-      <DialogTitle id="responsive-dialog-title">Set Master Password</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">Set Password</DialogTitle>
       <DialogContent>
-        Set the master password that will be used to encrypt the passwords stored.
+        <Typography variant="body2" color="textSecondary">
+          Set the master password that will be used to encrypt the passwords stored.
+        </Typography>
         <FormControl error={Boolean(errorMessage)} size="small" fullWidth variant="outlined" style={{ marginTop: 20 }}>
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
@@ -61,6 +71,7 @@ export default ({
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => { setPassword(e.target.value); }}
+            disabled={!enabled}
             endAdornment={(
               <InputAdornment position="end">
                 <IconButton
@@ -85,6 +96,7 @@ export default ({
             type={showRetypedPassword ? 'text' : 'password'}
             value={retypedPassword}
             onChange={(e) => { setRetypedPassword(e.target.value); }}
+            disabled={!enabled}
             endAdornment={(
               <InputAdornment position="end">
                 <IconButton
@@ -103,7 +115,7 @@ export default ({
       </DialogContent>
       <DialogActions style={{ paddingRight: '24px' }}>
         <Button onClick={setMasterPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained">
-          Set Password
+          Save
         </Button>
       </DialogActions>
     </Dialog>

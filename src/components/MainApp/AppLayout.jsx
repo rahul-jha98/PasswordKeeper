@@ -76,17 +76,13 @@ export default (props) => {
 
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
   const appBar = (
     <AppBar className={classes.appBar}>
       <IconButton
         color="inherit"
         aria-label="open drawer"
         edge="start"
-        onClick={handleDrawerToggle}
+        onClick={() => { setMobileOpen(true); }}
         className={classes.menuButton}
       >
         <MenuIcon />
@@ -104,6 +100,7 @@ export default (props) => {
       marginClassName={classes.toolbar}
       selectedIndex={selectedIndex}
       setSelectedIndex={setSelectedIndex}
+      handleDrawerToggle={() => { setMobileOpen(false); }}
     />
   );
 
@@ -116,7 +113,7 @@ export default (props) => {
           variant="temporary"
           anchor="left"
           open={mobileOpen}
-          onClose={handleDrawerToggle}
+          onClose={() => { setMobileOpen(false); }}
           classes={{
             paper: classes.drawerPaper,
           }}

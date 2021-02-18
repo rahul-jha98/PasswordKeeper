@@ -13,10 +13,17 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Typography from '@material-ui/core/Typography';
+
+import { useTheme } from '@material-ui/core/styles';
 
 export default ({
   database, onPasswordLoaded,
 }) => {
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
+
   const [password, setPassword] = React.useState('');
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
   const [enabled, toggleEnabled] = React.useReducer((val) => !val, true);
@@ -43,14 +50,19 @@ export default ({
   };
   return (
     <Dialog
+      fullScreen={fullScreen}
       open
       fullWidth
       disableBackdropClick
       disableEscapeKeyDown
     >
-      <DialogTitle id="responsive-dialog-title">Enter Master Password</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">Enter Password</DialogTitle>
       <DialogContent>
-        <FormControl error={Boolean(errorMessage)} fullWidth variant="outlined">
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          In order to access your account you need to enter the master password
+          that you had set during first launch
+        </Typography>
+        <FormControl error={Boolean(errorMessage)} fullWidth variant="outlined" style={{ marginTop: 16 }}>
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
@@ -75,8 +87,8 @@ export default ({
         </FormControl>
       </DialogContent>
       <DialogActions style={{ paddingRight: '24px' }}>
-        <Button onClick={verifyPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained" autoFocus>
-          Verify Password
+        <Button onClick={verifyPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained">
+          Unlock
         </Button>
       </DialogActions>
     </Dialog>

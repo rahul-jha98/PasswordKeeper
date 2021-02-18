@@ -6,6 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
+import Dialog from '@material-ui/core/Dialog';
 
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
@@ -34,16 +35,39 @@ const DialogTitleWithEditAndDelete = withStyles(styles)((props) => {
   const {
     children, classes, onEditClicked, onDeleteClicked, ...other
   } = props;
+  const [open, toggleOpen] = React.useReducer((val) => !val, false);
+  const confirmDialog = (
+    <Dialog
+      open={open}
+      disableBackdropClick
+      disableEscapeKeyDown
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">Are you sure you want to delete account?</DialogTitle>
+      <DialogActions>
+        <Button onClick={toggleOpen} color="primary">
+          Disagree
+        </Button>
+        <Button onClick={() => { onDeleteClicked(); toggleOpen(); }} color="primary" autoFocus>
+          Agree
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
   return (
-    <DialogTitle disableTypography className={classes.root} {...other}>
-      <Typography className={classes.title} variant="h6">{children}</Typography>
-      <IconButton aria-label="edit" className={classes.icon} onClick={onEditClicked}>
-        <EditOutlinedIcon />
-      </IconButton>
-      <IconButton aria-label="delete" className={classes.icon} onClick={onDeleteClicked}>
-        <DeleteOutlinedIcon />
-      </IconButton>
-    </DialogTitle>
+    <>
+      <DialogTitle disableTypography className={classes.root} {...other}>
+        <Typography className={classes.title} variant="h6">{children}</Typography>
+        <IconButton aria-label="edit" className={classes.icon} onClick={onEditClicked}>
+          <EditOutlinedIcon />
+        </IconButton>
+        <IconButton aria-label="delete" className={classes.icon} onClick={toggleOpen}>
+          <DeleteOutlinedIcon />
+        </IconButton>
+      </DialogTitle>
+      {confirmDialog}
+    </>
   );
 });
 

@@ -11,7 +11,9 @@ import AddIcon from '@material-ui/icons/Add';
 import CategoriesList from './CategoriesList';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
-export default ({ marginClassName, selectedIndex, setSelectedIndex }) => {
+export default ({
+  marginClassName, selectedIndex, setSelectedIndex, handleDrawerToggle,
+}) => {
   const { database } = React.useContext(ApiHandlerContext);
   const [categories, setCategories] = React.useState([]);
 
@@ -24,6 +26,7 @@ export default ({ marginClassName, selectedIndex, setSelectedIndex }) => {
   const handleListItemClick = (event, index) => {
     if (index !== selectedIndex) {
       setSelectedIndex(index);
+      handleDrawerToggle();
     }
   };
 
