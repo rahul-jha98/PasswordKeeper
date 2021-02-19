@@ -48,6 +48,7 @@ export default ({ open, toggleOpen }) => {
 
   const [fields, setFields] = React.useState(initialAccount);
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [disabled, toggleDisabled] = React.useReducer((val) => !val, false);
 
   const changeField = (prop) => (value) => {
     setFields({ ...fields, [prop]: value });
@@ -69,6 +70,7 @@ export default ({ open, toggleOpen }) => {
         setErrorMessage('Category with this name already exists');
         return;
       }
+      toggleDisabled();
       setErrorMessage('');
       const values = ['', '', '', '', ''];
       let lastIdx = 0;
@@ -85,8 +87,9 @@ export default ({ open, toggleOpen }) => {
       await database.insertCategory(fields);
       closeDialog();
       showToast('Category added');
+      toggleDisabled();
     } catch (err) {
-      console.log(err);
+      toggleDisabled();
       setErrorMessage('Network Error. Try again later');
     }
   };
@@ -108,7 +111,7 @@ export default ({ open, toggleOpen }) => {
             <IconSelectDialog selectedIcon={fields.icon} setSelectedIcon={(e) => changeField('icon')(e.target.value)} />
           </Grid>
           <Grid item style={{ flex: 1 }}>
-            <FormControl error={Boolean(errorMessage)} fullWidth variant="outlined" size="small">
+            <FormControl error={Boolean(errorMessage)} fullWidth variant="outlined" size="small" disabled={disabled}>
               <InputLabel htmlFor="name-field">Category Name</InputLabel>
               <OutlinedInput
                 id="name-field"
@@ -139,16 +142,17 @@ export default ({ open, toggleOpen }) => {
                   key={columnName}
                   className={classes.marginTop3}
                   initialType={initialType}
+                  disabled={disabled}
                 />
               );
             })
           }
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button autoFocus onClick={closeDialog} color="primary">
+        <Button autoFocus onClick={closeDialog} color="primary" disabled={disabled}>
           Cancel
         </Button>
-        <Button onClick={addCategory} color="primary" variant="contained" autoFocus>
+        <Button onClick={addCategory} color="primary" variant="contained" autoFocus disabled={disabled}>
           Add
         </Button>
       </DialogActions>

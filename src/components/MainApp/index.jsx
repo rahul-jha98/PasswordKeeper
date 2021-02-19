@@ -39,8 +39,12 @@ export default class MainApp extends React.Component {
     this.setState({ toast });
   }
 
-  onPasswordLoaded = () => {
-    this.setState({ loaded: true, action: null, message: 'Loading Data from Sheet' });
+  onPasswordLoaded = (loading) => {
+    if (loading) {
+      this.setState({ action: null, message: 'Loading Data from Sheet' });
+    } else {
+      this.setState({ loaded: true });
+    }
   }
 
   render() {

@@ -118,6 +118,7 @@ export default ({
   let Component = InputComponent;
   const type = name[0];
   const label = name.slice(2);
+  console.log(type);
   if (type === '*') {
     Component = PasswordComponent;
   }

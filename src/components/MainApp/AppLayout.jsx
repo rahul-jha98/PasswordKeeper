@@ -140,7 +140,7 @@ export default (props) => {
       {navigation}
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <CategoryItems selectedIndex={selectedIndex} />
+        <CategoryItems selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
       </main>
       <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />

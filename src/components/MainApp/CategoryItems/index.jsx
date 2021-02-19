@@ -10,8 +10,8 @@ const categoriesIndexedByName = (categories) => {
   });
   return mappings;
 };
-export default ({ selectedIndex }) => {
-  const { database } = React.useContext(ApiHandlerContext);
+export default ({ selectedIndex, setSelectedIndex }) => {
+  const { database, showToast } = React.useContext(ApiHandlerContext);
   const [accountList, setAccountList] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [filteredList, setFilteredList] = React.useState([]);
@@ -34,12 +34,20 @@ export default ({ selectedIndex }) => {
     }
   }, [selectedIndex, accountList, categories]);
 
+  const deleteCategory = async () => {
+    await database.deleteCategory(selectedIndex, () => {
+      setSelectedIndex(-1);
+    });
+    showToast('Category has been deleted');
+  };
   return (
     <CategoryItemsDumb
       heading={selectedIndex === -1 ? 'All Accounts' : categories[selectedIndex].name}
       passwordList={filteredList}
       categoriesMappings={categoriesIndexedByName(categories)}
       database={database}
+      deleteCategory={deleteCategory}
+      deleteEnabled={selectedIndex > 1}
     />
   );
 };

@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 
 import GitHubIcon from '@material-ui/icons/GitHub';
-import DarkModeIcon from '@material-ui/icons/Brightness4';
+import InfoIcon from '@material-ui/icons/InfoOutlined';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import ApiHandlerContext from '../provider/ApiHandlerContext';
@@ -59,9 +59,9 @@ export default ({
       </a>
       <MenuItem onClick={handlePopoverClose}>
         <ListItemIcon>
-          <DarkModeIcon fontSize="small" />
+          <InfoIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary="Toggle Dark Mode" />
+        <ListItemText primary="About" />
       </MenuItem>
 
       <MenuItem onClick={authHandler.signOutFromGoogle}>

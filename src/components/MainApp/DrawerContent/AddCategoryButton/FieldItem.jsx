@@ -4,12 +4,14 @@ import Chip from '@material-ui/core/Chip';
 
 const types = ['$-', '*-', '@-'];
 export default ({
-  label, text, setText, className, initialType,
+  label, text, setText, className, initialType, disabled,
 }) => {
   const value = text.slice(2);
 
   const [typeIdx, setTypeIdx] = React.useState(initialType || 0);
-
+  React.useEffect(() => {
+    setText(`${types[typeIdx]}${value}`);
+  }, [typeIdx]);
   return (
     <div>
       <TextField
@@ -21,6 +23,7 @@ export default ({
         fullWidth
         variant="outlined"
         size="small"
+        disabled={disabled}
       />
       <div style={{ margin: '8px 0px', textAlign: 'right' }}>
         <Chip

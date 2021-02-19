@@ -38,7 +38,8 @@ export default class Database {
       ['Web Account', 'public', '@-Website Link', '$-Username', '*-Password'],
       ['Email', 'mail', '$-Email Account', '*-Password'],
       ['Credit Card', 'card', '$-Card Number', '$-Expiry Date', '*-CVV'],
-      ['Shopping Website', 'shop', '$-E-Mail', '$-Phone Number', '*-Password'],
+      ['Wifi Account', 'wifi', '$-Name', '*-Password'],
+      ['Linked Accounts', 'link', '$-Connected Account'],
     ]);
 
     await this.db.dropTable('Sheet1');
@@ -132,6 +133,16 @@ export default class Database {
 
   insertCategory = async (details) => {
     await this.db.getTable('categories').insertOne(details);
+    this.notifyDataChanged('categories');
+  }
+
+  deleteCategory = async (cateogry_idx, notifyDataDeleted) => {
+    console.log(cateogry_idx);
+    const categoryName = this.db.getTable('categories').getRow(cateogry_idx).name;
+    await this.db.getTable('data').deleteRowsWhere((data) => data.category === categoryName);
+    await this.db.getTable('categories').deleteRow(cateogry_idx);
+    notifyDataDeleted();
+    this.notifyDataChanged('data');
     this.notifyDataChanged('categories');
   }
 }
