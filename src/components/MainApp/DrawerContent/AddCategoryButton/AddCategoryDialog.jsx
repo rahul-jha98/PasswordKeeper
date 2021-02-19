@@ -39,13 +39,13 @@ const useStyles = makeStyles((theme) => ({
 const initialAccount = {
   name: '', icon: 'public', field1: '@-Website Link', field2: '$-Username', field3: '*-Password', field4: '', field5: '',
 };
-export default ({ open, toggleOpen }) => {
+export default ({ open, toggleOpen, database }) => {
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [fields, setFields] = React.useState(initialAccount);
-  const [errorMessage] = React.useState('');
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const changeField = (prop) => (value) => {
     setFields({ ...fields, [prop]: value });
@@ -56,6 +56,36 @@ export default ({ open, toggleOpen }) => {
     setTimeout(() => {
       setFields(initialAccount);
     }, 300);
+  };
+
+  const addCategory = async () => {
+    try {
+      if (fields.name.length === 0) {
+        setErrorMessage('Cannot be empty');
+        return;
+      } if (database.checkNameExist('categories', fields.name)) {
+        setErrorMessage('Category with this name already exists');
+        return;
+      }
+      setErrorMessage('');
+      const values = ['', '', '', '', ''];
+      let lastIdx = 0;
+
+      for (let i = 0; i < 5; i += 1) {
+        if (fields[`field${i + 1}`].length > 2) {
+          values[lastIdx] = fields[`field${i + 1}`];
+          lastIdx += 1;
+        }
+      }
+      values.forEach((val, idx) => {
+        fields[`field${idx + 1}`] = val;
+      });
+      await database.insertCategory(fields);
+      closeDialog();
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('Network Error. Try again later');
+    }
   };
   return (
 
@@ -70,7 +100,7 @@ export default ({ open, toggleOpen }) => {
     >
       <DialogTitle>Add New Category</DialogTitle>
       <DialogContent>
-        <Grid container spacing={1} alignItems="center">
+        <Grid container spacing={1} alignItems="baseline">
           <Grid item>
             <IconSelectDialog selectedIcon={fields.icon} setSelectedIcon={(e) => changeField('icon')(e.target.value)} />
           </Grid>
@@ -115,7 +145,7 @@ export default ({ open, toggleOpen }) => {
         <Button autoFocus onClick={closeDialog} color="primary">
           Cancel
         </Button>
-        <Button onClick={closeDialog} color="primary" variant="contained" autoFocus>
+        <Button onClick={addCategory} color="primary" variant="contained" autoFocus>
           Add
         </Button>
       </DialogActions>

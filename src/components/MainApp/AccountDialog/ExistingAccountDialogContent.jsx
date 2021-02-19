@@ -44,13 +44,13 @@ const DialogTitleWithEditAndDelete = withStyles(styles)((props) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Are you sure you want to delete account?</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Delete account permanently?</DialogTitle>
       <DialogActions>
         <Button onClick={toggleOpen} color="primary">
-          Disagree
+          Cancel
         </Button>
         <Button onClick={() => { onDeleteClicked(); toggleOpen(); }} color="primary" autoFocus>
-          Agree
+          Delete
         </Button>
       </DialogActions>
     </Dialog>

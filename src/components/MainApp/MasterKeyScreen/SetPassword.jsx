@@ -40,8 +40,9 @@ export default ({
       setErrorMessage('');
       toggleEnabled();
 
-      await database.initialize(password);
-      onPasswordLoaded();
+      database.initialize(password, () => {
+        onPasswordLoaded();
+      });
     } catch (err) {
       setErrorMessage('Network Error. Try again later');
     }

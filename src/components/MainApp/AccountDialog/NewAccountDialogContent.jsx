@@ -24,7 +24,8 @@ export default ({
 
   setIsDialogCancellable(false);
 
-  const [nameError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [disabled, setDisabled] = useState(false);
   const [account, setAccount] = useState(initialAccountState);
   // useEffect(() => {
   //   populateFields(categoryIdx);
@@ -37,9 +38,24 @@ export default ({
     }, 100);
   };
 
-  const handleAction = () => {
-    database.insertPassword(account);
-    handleClose();
+  const handleAction = async () => {
+    try {
+      if (account.name.length === 0) {
+        setNameError('Cannot be empty');
+        return;
+      } if (database.checkNameExist('data', account.name)) {
+        setNameError('Account with this name already exists');
+        return;
+      }
+      setNameError('');
+      setDisabled(true);
+      await database.insertPassword(account);
+      closeDialog();
+    } catch (err) {
+      console.log(err);
+      setNameError('Network Error. Try again later');
+      setDisabled(false);
+    }
   };
 
   return (
@@ -48,16 +64,16 @@ export default ({
       <DialogContent className={classes.root}>
         <FormItems
           {...{
-            account, setAccount, categoriesMappings, classes, nameError,
+            account, setAccount, categoriesMappings, classes, nameError, disabled,
           }}
           mode="add"
         />
       </DialogContent>
       <DialogActions className={classes.actions}>
-        <Button autoFocus onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="primary" disabled={disabled}>
           Cancel
         </Button>
-        <Button onClick={handleAction} color="primary" variant="contained" autoFocus>
+        <Button onClick={handleAction} color="primary" variant="contained" disabled={disabled}>
           Add
         </Button>
       </DialogActions>

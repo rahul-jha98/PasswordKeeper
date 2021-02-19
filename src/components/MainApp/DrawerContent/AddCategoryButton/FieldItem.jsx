@@ -6,7 +6,7 @@ const types = ['$-', '*-', '@-'];
 export default ({
   label, text, setText, className, initialType,
 }) => {
-  const value = text.split('-', 2)[1];
+  const value = text.slice(2);
 
   const [typeIdx, setTypeIdx] = React.useState(initialType || 0);
 

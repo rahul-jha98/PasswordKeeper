@@ -13,7 +13,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import CopyIcon from './CopyIcon';
 
 const InputComponent = ({
-  label, className, text, onTextChange, variant, size, type,
+  label, className, text, onTextChange, variant, size, type, disabled,
 }) => {
   let adornment = null;
   if (variant === 'filled' && text) {
@@ -44,7 +44,7 @@ const InputComponent = ({
   }
   const Input = variant === 'filled' ? FilledInput : OutlinedInput;
   return (
-    <FormControl className={className} size={size} variant={variant} fullWidth>
+    <FormControl className={className} size={size} variant={variant} fullWidth disabled={disabled}>
       <InputLabel>{label}</InputLabel>
       <Input
         value={text}
@@ -58,7 +58,7 @@ const InputComponent = ({
   );
 };
 const PasswordComponent = ({
-  className, text, onTextChange, variant, size,
+  label, className, text, onTextChange, variant, size, disabled,
 }) => {
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
   const handleMouseDownPassword = (event) => {
@@ -67,8 +67,8 @@ const PasswordComponent = ({
   const Input = variant === 'filled' ? FilledInput : OutlinedInput;
 
   return (
-    <FormControl className={className} size={size} variant={variant} fullWidth>
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+    <FormControl className={className} size={size} variant={variant} fullWidth disabled={disabled}>
+      <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
       <Input
         id="outlined-adornment-password"
         type={showPassword ? 'text' : 'password'}
@@ -97,19 +97,20 @@ const PasswordComponent = ({
             </IconButton>
           </InputAdornment>
             )}
-        labelWidth={70}
+        label={label}
       />
     </FormControl>
   );
 };
 
 export default ({
-  account, category, className, handleTextChange, variant, size,
+  account, category, className, handleTextChange, variant, size, disabled,
 }) => Array.from({ length: 5 }, (_, i) => `field${i + 1}`).map((columnName) => {
   const name = category[columnName];
   if (!name) return null;
   let Component = InputComponent;
-  const [type, label] = name.split('-', 2);
+  const type = name[0];
+  const label = name.slice(2);
   if (type === '*') {
     Component = PasswordComponent;
   }
@@ -122,6 +123,7 @@ export default ({
       type={type}
       text={account[columnName]}
       onTextChange={handleTextChange(columnName)}
+      disabled={disabled}
     />
   );
 });

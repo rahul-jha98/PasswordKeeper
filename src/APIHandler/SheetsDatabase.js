@@ -22,12 +22,12 @@ export default class Database {
     return this.db.tablesByIndex[0].title === 'Sheet1';
   }
 
-  initialize = async (masterKey) => {
+  initialize = async (masterKey, setStatusLoading) => {
     this.encryptionHander.setKey(masterKey);
 
     const dataTableColumns = ['name', 'note', 'category', ...this.fields];
     await this.db.addTable('data', dataTableColumns);
-
+    setStatusLoading();
     const categoryTableColumns = ['name', 'icon', ...this.fields];
     await this.db.addTable('categories', categoryTableColumns);
 
@@ -118,5 +118,17 @@ export default class Database {
     });
     if (!decryptedDetails.note) decryptedDetails.note = '';
     return decryptedDetails;
+  }
+
+  checkNameExist = (table, name) => {
+    if (this.db.getTable(table).getData().filter((rowData) => rowData.name === name).length) {
+      return true;
+    }
+    return false;
+  }
+
+  insertCategory = async (details) => {
+    await this.db.getTable('categories').insertOne(details);
+    this.notifyDataChanged('categories');
   }
 }

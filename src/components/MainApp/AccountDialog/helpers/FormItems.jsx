@@ -8,7 +8,7 @@ import CategoriesListSelect from './CategoriesListSelect';
 import LoadMaterialIcon from '../../LoadMaterialIcon';
 
 export default ({
-  account, setAccount, classes, mode, nameError, categoriesMappings,
+  account, setAccount, classes, mode, nameError, categoriesMappings, disabled,
 }) => {
   const category = categoriesMappings[account.category];
   let onTextChange = () => () => {
@@ -41,7 +41,7 @@ export default ({
       text={account.category}
       onTextChange={onTextChange('category')}
       categoriesMappings={categoriesMappings}
-      disabled={mode === 'edit'}
+      disabled={disabled || mode === 'edit'}
     />
   );
 
@@ -59,6 +59,7 @@ export default ({
         size={size}
         error={Boolean(nameError)}
         helperText={nameError}
+        disabled={disabled}
       />
       <Typography
         variant="body2"
@@ -74,6 +75,7 @@ export default ({
         variant={variant}
         handleTextChange={onTextChange}
         size={size}
+        disabled={disabled}
       />
       <TextField
         className={classes.marginTop4}
@@ -86,6 +88,7 @@ export default ({
         onChange={onTextChange('note')}
         size={size}
         rows={3}
+        disabled={disabled}
       />
     </>
   );
