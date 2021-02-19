@@ -50,7 +50,7 @@ export default ({
       </List>
       <Divider />
       <CategoriesList {...{ categories, selectedIndex, handleListItemClick }} />
-      <AddCategoryButton database={database} closeDrawer={handleDrawerToggle} />
+      <AddCategoryButton closeDrawer={handleDrawerToggle} />
     </div>
   );
 };

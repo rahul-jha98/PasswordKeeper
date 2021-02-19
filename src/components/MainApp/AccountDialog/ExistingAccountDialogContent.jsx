@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
@@ -59,12 +60,16 @@ const DialogTitleWithEditAndDelete = withStyles(styles)((props) => {
     <>
       <DialogTitle disableTypography className={classes.root} {...other}>
         <Typography className={classes.title} variant="h6">{children}</Typography>
-        <IconButton aria-label="edit" className={classes.icon} onClick={onEditClicked}>
-          <EditOutlinedIcon />
-        </IconButton>
-        <IconButton aria-label="delete" className={classes.icon} onClick={toggleOpen}>
-          <DeleteOutlinedIcon />
-        </IconButton>
+        <Tooltip title="Edit">
+          <IconButton aria-label="edit" className={classes.icon} onClick={onEditClicked}>
+            <EditOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton aria-label="delete" className={classes.icon} onClick={toggleOpen}>
+            <DeleteOutlinedIcon />
+          </IconButton>
+        </Tooltip>
       </DialogTitle>
       {confirmDialog}
     </>

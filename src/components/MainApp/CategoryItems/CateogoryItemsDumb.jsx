@@ -11,6 +11,11 @@ import AccountDialog, { Mode } from '../AccountDialog';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  container: {
+    maxWidth: 1500,
   },
   icon: {
     padding: '18px 28px 13px 28px',
@@ -47,7 +52,7 @@ export default ({
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} className={classes.container}>
         <Grid item xs={12}>
           <Typography variant="h5">{heading}</Typography>
         </Grid>

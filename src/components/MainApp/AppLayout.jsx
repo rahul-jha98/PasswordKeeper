@@ -61,10 +61,6 @@ const useStyles = makeStyles((theme) => ({
       bottom: theme.spacing(2),
     },
     color: theme.palette.common.white,
-    // backgroundColor: green[500],
-    // '&:hover': {
-    //   backgroundColor: green[600],
-    // },
   },
 }));
 
@@ -88,7 +84,7 @@ export default (props) => {
         <MenuIcon />
       </IconButton>
       <Typography variant="h6" noWrap className={classes.title}>
-        Responsive drawer
+        PasswordManager
       </Typography>
     </AppBar>
   );

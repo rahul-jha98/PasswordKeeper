@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import FormItems from './helpers/FormItems';
 
 export default ({
-  database, classes, closeDialog, setIsDialogCancellable,
+  database, classes, closeDialog, setIsDialogCancellable, showToast,
 }) => {
   const categories = database.getCategories();
   const categoriesMappings = {};
@@ -51,6 +51,7 @@ export default ({
       setDisabled(true);
       await database.insertPassword(account);
       closeDialog();
+      showToast('Account has been added');
     } catch (err) {
       console.log(err);
       setNameError('Network Error. Try again later');

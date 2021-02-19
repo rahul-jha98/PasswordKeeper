@@ -15,6 +15,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 
 import FieldItem from './FieldItem';
 import IconSelectDialog from './IconSelectDialog';
+import ApiHandlerContext from '../../provider/ApiHandlerContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
 const initialAccount = {
   name: '', icon: 'public', field1: '@-Website Link', field2: '$-Username', field3: '*-Password', field4: '', field5: '',
 };
-export default ({ open, toggleOpen, database }) => {
+export default ({ open, toggleOpen }) => {
+  const { database, showToast } = React.useContext(ApiHandlerContext);
   const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
@@ -82,6 +84,7 @@ export default ({ open, toggleOpen, database }) => {
       });
       await database.insertCategory(fields);
       closeDialog();
+      showToast('Category added');
     } catch (err) {
       console.log(err);
       setErrorMessage('Network Error. Try again later');

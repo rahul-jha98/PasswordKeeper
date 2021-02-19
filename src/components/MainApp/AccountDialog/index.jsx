@@ -41,7 +41,7 @@ export default (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const { database } = React.useContext(ApiHandlerContext);
+  const { database, showToast } = React.useContext(ApiHandlerContext);
 
   const closeDialog = () => {
     setDialogOpen(false);
@@ -64,7 +64,7 @@ export default (props) => {
     >
       <DialogContentComponent
         {...{
-          database, closeDialog, classes, setIsDialogCancellable,
+          database, closeDialog, classes, setIsDialogCancellable, showToast,
         }}
         {...rest}
       />

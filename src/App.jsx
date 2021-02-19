@@ -16,6 +16,15 @@ const theme = createMuiTheme({
     },
 
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1520,
+    },
+  },
   typography: {
     fontFamily: [
       'Work Sans',
@@ -33,7 +42,6 @@ class App extends React.Component {
   componentDidMount = () => {
     this.authHandler.onSignInWithGoogle(
       (user) => {
-        console.log(`Status of user changed to ${user}`);
         this.setState({ user });
       },
       (error) => {

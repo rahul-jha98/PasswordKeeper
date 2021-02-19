@@ -65,14 +65,22 @@ export default class Database {
 
   getCategories = () => this.db.getTable('categories').getData();
 
-  insertPassword = async (details) => {
+  encryptFields = (details) => {
     const encryptedDetails = { ...details };
     this.fields.forEach((field) => {
-      if (encryptedDetails[field].length) {
+      if (encryptedDetails[field] && encryptedDetails[field].length) {
         encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
       }
     });
-    await this.db.getTable('data').insertOne(encryptedDetails);
+    if (encryptedDetails.note && encryptedDetails.note.length) {
+      encryptedDetails.note = this.encryptionHander.encrypt(encryptedDetails.note);
+    }
+
+    return encryptedDetails;
+  }
+
+  insertPassword = async (details) => {
+    await this.db.getTable('data').insertOne(this.encryptFields(details));
     this.notifyDataChanged('data');
   }
 
@@ -85,13 +93,7 @@ export default class Database {
   }
 
   updateAccount = async (updatedAccount) => {
-    const encryptedDetails = { ...updatedAccount };
-    this.fields.forEach((field) => {
-      if (encryptedDetails[field] && encryptedDetails[field].length) {
-        encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
-      }
-    });
-    await this.db.getTable('data').updateRow(updatedAccount.row_idx, encryptedDetails);
+    await this.db.getTable('data').updateRow(updatedAccount.row_idx, this.encryptFields(updatedAccount));
     this.notifyDataChanged('data');
   }
 
@@ -116,7 +118,8 @@ export default class Database {
         decryptedDetails[field] = '';
       }
     });
-    if (!decryptedDetails.note) decryptedDetails.note = '';
+    if (decryptedDetails.note) this.encryptionHander.decrypt(encryptedDetails.note);
+    else decryptedDetails.note = '';
     return decryptedDetails;
   }
 

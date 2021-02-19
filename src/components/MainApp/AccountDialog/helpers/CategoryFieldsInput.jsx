@@ -6,39 +6,45 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FilledInput from '@material-ui/core/FilledInput';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import CopyIcon from './CopyIcon';
+import ApiHandlerContext from '../../provider/ApiHandlerContext';
 
 const InputComponent = ({
-  label, className, text, onTextChange, variant, size, type, disabled,
+  label, className, text, onTextChange, variant, size, type, disabled, showToast,
 }) => {
   let adornment = null;
   if (variant === 'filled' && text) {
-    if (type === '@') {
+    if (type === '@' && (text.startsWith('http://') || text.startsWith('https://'))) {
       adornment = (
-        <IconButton
-          aria-label="toggle password visibility"
-          edge="end"
-          href={text}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <OpenInNewIcon />
-        </IconButton>
+        <Tooltip title="Open in new tab">
+          <IconButton
+            aria-label="toggle password visibility"
+            edge="end"
+            href={text}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <OpenInNewIcon />
+          </IconButton>
+        </Tooltip>
 
       );
     } else {
       adornment = (
-        <IconButton
-          aria-label="toggle password visibility"
-          edge="end"
-          onClick={() => { navigator.clipboard.writeText(text); }}
-        >
-          <CopyIcon />
-        </IconButton>
+        <Tooltip title="Copy">
+          <IconButton
+            aria-label="toggle password visibility"
+            edge="end"
+            onClick={() => { navigator.clipboard.writeText(text); showToast('Copied to clipboard'); }}
+          >
+            <CopyIcon />
+          </IconButton>
+        </Tooltip>
       );
     }
   }
@@ -106,6 +112,7 @@ const PasswordComponent = ({
 export default ({
   account, category, className, handleTextChange, variant, size, disabled,
 }) => Array.from({ length: 5 }, (_, i) => `field${i + 1}`).map((columnName) => {
+  const { showToast } = React.useContext(ApiHandlerContext);
   const name = category[columnName];
   if (!name) return null;
   let Component = InputComponent;
@@ -117,7 +124,7 @@ export default ({
   return (
     <Component
       {...{
-        label, columnName, className, variant, size,
+        label, columnName, className, variant, size, showToast,
       }}
       key={label}
       type={type}
