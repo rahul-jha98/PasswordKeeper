@@ -43,7 +43,7 @@ export default class Database {
    * @returns {boolean} Whether the password is correct
    */
   verifyPassword = (password) => {
-    const savedEncrypted = this.db.getTable('masterpassword').getRow(0).password;
+    const savedEncrypted = this.db.getTable('preferences').getRow(0).value;
 
     if (this.encryptionHander.validate('nowyouseeme', password, savedEncrypted)) {
       this.encryptionHander.setKey(password);
@@ -84,14 +84,22 @@ export default class Database {
   // METHODS FOR CATEGORIES TABLE /////////////////////////////////////////////////
   getCategories = () => this.db.getTable('categories').getData();
 
+  getCategoriesIndexedByName = () => {
+    const categoriesMappings = {};
+    this.db.getTable('categories').getData().forEach((category) => {
+      categoriesMappings[category.name] = category;
+    });
+    return categoriesMappings;
+  }
+
   /**
    * Insert a category to the database
    * @param {Object} category category object
    */
-  insertCategory = async (category) => {
-    await this.db.getTable('categories').insertOne(category);
-    this.notifyDataChanged('categories');
-  }
+    insertCategory = async (category) => {
+      await this.db.getTable('categories').insertOne(category);
+      this.notifyDataChanged('categories');
+    }
 
   /**
    * Delete a category and its child component

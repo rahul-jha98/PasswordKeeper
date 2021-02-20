@@ -15,7 +15,11 @@ export default class MainApp extends React.Component {
     this.drive = new Drive(this.props.authHandler);
     this.database = new SheetsDatabase();
     this.state = {
-      loaded: false, toast: '', action: null, message: 'Connecting to Google Drive',
+      loaded: false,
+      toast: '',
+      action: null,
+      message: 'Connecting to Google Drive',
+      email: this.props.authHandler.getUser().getEmail(),
     };
   }
 
@@ -41,7 +45,7 @@ export default class MainApp extends React.Component {
 
   onPasswordLoaded = (loading) => {
     if (loading) {
-      this.setState({ action: null, message: 'Loading Data from Sheet' });
+      this.setState({ action: null, message: 'Loading Data from Sheet', email: null });
     } else {
       this.setState({ loaded: true });
     }
@@ -63,6 +67,8 @@ export default class MainApp extends React.Component {
                 action={this.state.action}
                 database={this.database}
                 onPasswordLoaded={this.onPasswordLoaded}
+                email={this.state.email}
+                authHandler={this.props.authHandler}
               />
             ) }
         </ApiHandlerProvider>

@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
+import { Button } from '@material-ui/core';
 import SetPassword from './SetPassword';
 import VerifyPassword from './VerifyPassword';
 
@@ -16,6 +17,11 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     margin: 20,
+  },
+  actions: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    textAlign: 'center',
   },
 }));
 /**
@@ -37,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 /** @param {MasterKeyScreenProps} props */
 export default (props) => {
   const {
-    action, message, database, onPasswordLoaded,
+    action, message, database, onPasswordLoaded, email, authHandler,
   } = props;
   const classes = useStyles();
   // By default we begin with a circular progress bar and message
@@ -45,6 +51,20 @@ export default (props) => {
     <>
       <CircularProgress color="inherit" />
       <Typography variant="body" className={classes.text}>{ message }</Typography>
+      {email
+        ? (
+          <div className={classes.actions}>
+            <Typography variant="body2" style={{ margin: 8 }}>
+              Signed In as
+              {' '}
+              { email }
+            </Typography>
+            <Button variant="outlined" color="inherit" onClick={authHandler.signOutFromGoogle}>
+              Sign Out
+            </Button>
+          </div>
+        )
+        : null}
     </>
   );
 

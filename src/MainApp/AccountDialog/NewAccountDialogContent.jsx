@@ -24,12 +24,9 @@ export default ({
 
   setIsDialogCancellable(false);
 
+  const [account, setAccount] = useState(initialAccountState);
   const [nameError, setNameError] = useState('');
   const [disabled, setDisabled] = useState(false);
-  const [account, setAccount] = useState(initialAccountState);
-  // useEffect(() => {
-  //   populateFields(categoryIdx);
-  // }, [categoryIdx]);
 
   const handleClose = () => {
     closeDialog();
@@ -53,7 +50,6 @@ export default ({
       closeDialog();
       showToast('Account has been added');
     } catch (err) {
-      console.log(err);
       setNameError('Network Error. Try again later');
       setDisabled(false);
     }

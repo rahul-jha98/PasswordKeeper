@@ -53,6 +53,8 @@ export default ({
   const [selectedIdx, setSelectedIdx] = React.useState(-1);
   const [dialogOpen, setDialogOpenValue] = React.useState(false);
 
+  // Using urls hash parameter to set dialog state so that
+  // we can use back to close dialog
   const setDialogOpen = (val) => {
     if (val) {
       window.location.hash = '#view';
@@ -60,13 +62,8 @@ export default ({
       window.history.back();
     }
   };
-  const handleItemClick = (selected_item_idx) => () => {
-    setTimeout(() => {
-      setSelectedIdx(selected_item_idx);
-      setDialogOpen(true);
-    }, 200);
-  };
 
+  // Register listener to set dialog state based on URL hash paramter
   React.useEffect(() => {
     if (window.location.hash === '#view') {
       window.history.back();
@@ -76,8 +73,15 @@ export default ({
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  const [open, toggleOpen] = React.useReducer((val) => !val, false);
+  const handleItemClick = (selected_item_idx) => () => {
+    setTimeout(() => {
+      setSelectedIdx(selected_item_idx);
+      setDialogOpen(true);
+    }, 200);
+  };
 
+  // State variable to control visibility of confirmation dialog
+  const [open, toggleOpen] = React.useReducer((val) => !val, false);
   const confirmDialog = (
     <Dialog
       open={open}
