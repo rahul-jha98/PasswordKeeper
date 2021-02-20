@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 
 const types = ['$-', '*-', '@-'];
+
 export default ({
   label, text, setText, className, initialType, disabled,
 }) => {

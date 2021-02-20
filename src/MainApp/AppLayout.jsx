@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
 
 import AppBar from './AppBar';
-import DrawerContent from './DrawerContent/DrawerContent';
+import DrawerContent from './DrawerContent';
 import CategoryItems from './CategoryItems';
 import AccountDialog, { Mode } from './AccountDialog';
 
@@ -64,14 +64,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * This component lays out the basic layout of the main app.
+ * i.e. AppBar, Drawer, and main content area.
+ */
 export default (props) => {
   const { window } = props;
   const classes = useStyles();
+  // mobileOpen is used to control the temporary drawer in mobile mode
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  // dialogOpen is state to control the open state of Add Account Dialog
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+  // Index of the category that is selected. -1 means All Accounts
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(-1);
 
+  // Custom App Bar for the application
   const appBar = (
     <AppBar className={classes.appBar}>
       <IconButton
@@ -91,15 +100,18 @@ export default (props) => {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  // Content which will be rendered inside the drawer
   const drawerContent = (
     <DrawerContent
       marginClassName={classes.toolbar}
-      selectedIndex={selectedIndex}
-      setSelectedIndex={setSelectedIndex}
+      selectedCategoryIndex={selectedCategoryIndex}
+      setSelectedCategoryIndex={setSelectedCategoryIndex}
       handleDrawerToggle={() => { setMobileOpen(false); }}
     />
   );
 
+  // Drawer of the app. Both temporary and permament drawer is
+  // added and one is hidden using css based on screen width
   const navigation = (
     <nav className={classes.drawer} aria-label="categories">
       <Hidden mdUp implementation="css">
@@ -140,8 +152,13 @@ export default (props) => {
       {navigation}
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <CategoryItems selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} />
+        <CategoryItems
+          selectedCategoryIndex={selectedCategoryIndex}
+          setSelectedCategoryIndex={setSelectedCategoryIndex}
+        />
       </main>
+      {/* FAB to add a new account along with the account
+        * dialog with mode set to new account */}
       <Fab aria-label="Add" className={classes.fab} color="secondary" onClick={() => setDialogOpen(true)}>
         <AddIcon />
       </Fab>

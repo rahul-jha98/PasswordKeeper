@@ -49,7 +49,7 @@ export default ({
       }
       setNameError('');
       setDisabled(true);
-      await database.insertPassword(account);
+      await database.insertAccount(account);
       closeDialog();
       showToast('Account has been added');
     } catch (err) {

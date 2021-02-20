@@ -4,8 +4,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MasterKeyScreen from './MasterKeyScreen';
 
 import ApiHandlerProvider from './provider/ApiHandlerProvider';
-import Drive from '../../APIHandler/Drive';
-import SheetsDatabase from '../../APIHandler/SheetsDatabase';
+import Drive from '../APIHandler/Drive';
+import SheetsDatabase from '../APIHandler/Database';
 
 const AppLayout = React.lazy(() => import('./AppLayout'));
 

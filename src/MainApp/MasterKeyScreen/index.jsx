@@ -18,18 +18,37 @@ const useStyles = makeStyles((theme) => ({
     margin: 20,
   },
 }));
+/**
+ * @typedef MasterKeyScreenProps
+ *
+ * @property {string | null} action
+ * what is the mode of screen to be rendered
+ *   - if null, a progress bar with message is displayed
+ *   - if 'verify', shows VerifyPasswordDialog
+ *   - if 'add', show SetPasswordDialog
+ *
+ * @property {string} message
+ * The message which is rendered belong the circular progress bar
+ *
+ * @property {function} onPasswordLoaded
+ * callback to notify that the password had been entered and being processed
+ */
 
+/** @param {MasterKeyScreenProps} props */
 export default (props) => {
   const {
-    message, action, database, onPasswordLoaded,
+    action, message, database, onPasswordLoaded,
   } = props;
   const classes = useStyles();
+  // By default we begin with a circular progress bar and message
   let content = (
     <>
       <CircularProgress color="inherit" />
       <Typography variant="body" className={classes.text}>{ message }</Typography>
     </>
   );
+
+  // if action is one of 'verify' or 'add' we set content to SetPassword or VerifyPassword
   if (action === 'verify') {
     content = <VerifyPassword database={database} onPasswordLoaded={onPasswordLoaded} />;
   } else if (action === 'add') {

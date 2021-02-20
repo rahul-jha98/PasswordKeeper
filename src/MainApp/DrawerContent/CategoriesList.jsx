@@ -8,7 +8,7 @@ import LoadMaterialIcon from '../LoadMaterialIcon';
 
 export default ({
   categories,
-  selectedIndex,
+  selectedCategoryIndex,
   handleListItemClick,
 }) => (
   <List>
@@ -16,7 +16,7 @@ export default ({
       <ListItem
         button
         key={category.name}
-        selected={selectedIndex === idx}
+        selected={selectedCategoryIndex === idx}
         onClick={(event) => handleListItemClick(event, idx)}
       >
         <ListItemIcon>

@@ -5,6 +5,7 @@ import AddCategoryDialog from './AddCategoryDialog';
 
 export default ({ closeDrawer }) => {
   const [open, toggleOpen] = React.useReducer((val) => !val, false);
+
   return (
     <>
       <Button

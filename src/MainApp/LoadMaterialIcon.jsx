@@ -1,5 +1,6 @@
 import React from 'react';
 // import Icon from '@material-ui/core/Icon';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const Email = React.lazy(() => import('@material-ui/icons/EmailOutlined'));
 const Public = React.lazy(() => import('@material-ui/icons/PublicOutlined'));
@@ -15,6 +16,8 @@ const Fitness = React.lazy(() => import('@material-ui/icons/FitnessCenterOutline
 const Work = React.lazy(() => import('@material-ui/icons/WorkOutlineOutlined'));
 const School = React.lazy(() => import('@material-ui/icons/SchoolOutlined'));
 
+// In order to add icons in the add category dialog add it's name in icon list
+// and set its icon mapping
 export const iconList = [
   'public', 'mail', 'shop', 'card',
   'link', 'wifi', 'bank', 'book',
@@ -35,12 +38,15 @@ const mappings = {
   work: Work,
   school: School,
 };
+
+/**
+ * Component to help load a material icon which is needed by the app.
+ */
 export default (props) => {
   const Component = mappings[props.name];
   return (
-    <React.Suspense fallback="loading">
+    <React.Suspense fallback={<SvgIcon {...props} />}>
       <Component {...props} />
-
     </React.Suspense>
   );
 };

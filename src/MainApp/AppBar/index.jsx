@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -37,13 +36,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Customized app bar with menu items
 export default ({ className, children }) => {
   const classes = useStyles();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
+  // Get user's profile details
   const { authHandler } = React.useContext(ApiHandlerContext);
   const user = authHandler.getUser();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };

@@ -21,59 +21,58 @@ import { useTheme } from '@material-ui/core/styles';
 export default ({
   database, onPasswordLoaded,
 }) => {
+  // Set dialog mode to full screen in mobile layout
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
+  // For the password text field we use two state variables
+  // one for actual text and other for error messgae
   const [password, setPassword] = React.useState('');
-  const [retypedPassword, setRetypedPassword] = React.useState('');
-  const [enabled, toggleEnabled] = React.useReducer((val) => !val, true);
   const [errorMessage, setErrorMessage] = React.useState('');
+
+  // State to control whether password is visible or hidden
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
-  const [showRetypedPassword, toggleShowRetypedPassword] = React.useReducer((val) => !val, false);
-
-  const setMasterPassword = async () => {
-    try {
-      if (password !== retypedPassword) {
-        setErrorMessage('Passwords Do Not Match');
-        return;
-      }
-      setErrorMessage('');
-      toggleEnabled();
-
-      await database.initialize(password, () => {
-        onPasswordLoaded('loading');
-      });
-      onPasswordLoaded();
-    } catch (err) {
-      setErrorMessage('Network Error. Try again later');
-    }
-  };
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  /**
+   * Verify if the password user has entered is correct
+   */
+  const verifyPassword = async () => {
+    try {
+      const isPasswordCorrect = database.verifyPassword(password);
+      if (isPasswordCorrect) {
+        onPasswordLoaded();
+      } else {
+        setErrorMessage('Password Entered is Incorrect');
+      }
+    } catch (err) {
+      setErrorMessage('Error verifying password. Try again later');
+    }
+  };
   return (
     <Dialog
+      fullScreen={fullScreen}
       open
       fullWidth
       disableBackdropClick
       disableEscapeKeyDown
-      fullScreen={fullScreen}
     >
-      <DialogTitle id="responsive-dialog-title">Set Password</DialogTitle>
+      <DialogTitle id="responsive-dialog-title">Enter Password</DialogTitle>
       <DialogContent>
-        <Typography variant="body2" color="textSecondary">
-          Set the master password that will be used to encrypt the passwords stored.
+        <Typography variant="body2" color="textSecondary" gutterBottom>
+          In order to access your account you need to enter the master password
+          that you had set during first launch
         </Typography>
-        <FormControl error={Boolean(errorMessage)} size="small" fullWidth variant="outlined" style={{ marginTop: 20 }}>
+        <FormControl error={Boolean(errorMessage)} fullWidth variant="outlined" style={{ marginTop: 16 }}>
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
             type={showPassword ? 'text' : 'password'}
             value={password}
             onChange={(e) => { setPassword(e.target.value); }}
-            disabled={!enabled}
             endAdornment={(
               <InputAdornment position="end">
                 <IconButton
@@ -90,34 +89,11 @@ export default ({
           />
           <FormHelperText id="helper">{errorMessage}</FormHelperText>
         </FormControl>
-
-        <FormControl fullWidth variant="outlined" size="small" style={{ marginTop: 16 }}>
-          <InputLabel htmlFor="outlined-adornment-password">Re-enter Password</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={showRetypedPassword ? 'text' : 'password'}
-            value={retypedPassword}
-            onChange={(e) => { setRetypedPassword(e.target.value); }}
-            disabled={!enabled}
-            endAdornment={(
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={toggleShowRetypedPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            )}
-            label="Re-enter Password"
-          />
-        </FormControl>
       </DialogContent>
+
       <DialogActions style={{ paddingRight: '24px' }}>
-        <Button onClick={setMasterPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained">
-          Save
+        <Button onClick={verifyPassword} disabled={password.length === 0} color="primary" variant="contained">
+          Unlock
         </Button>
       </DialogActions>
     </Dialog>

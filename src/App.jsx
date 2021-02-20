@@ -2,9 +2,9 @@ import React from 'react';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import './App.css';
-import HomePage from './components/HomePage';
+import HomePage from './HomePage';
 import GoogleAuth from './APIHandler/Auth';
-import MainApp from './components/MainApp';
+import MainApp from './MainApp';
 
 const theme = createMuiTheme({
   palette: {
@@ -40,6 +40,7 @@ class App extends React.Component {
   }
 
   componentDidMount = () => {
+    // Setup authHandler to change the state when signin status changes
     this.authHandler.onSignInWithGoogle(
       (user) => {
         this.setState({ user });
@@ -52,6 +53,8 @@ class App extends React.Component {
 
   render() {
     const { user } = this.state;
+    // Based on the whenther user state is null or not we render
+    // HomePage or the MainApp component
     if (!user) {
       return <HomePage authHandler={this.authHandler} />;
     }

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import React from 'react';
 
 import Popover from '@material-ui/core/Popover';
@@ -15,10 +14,9 @@ import LogoutIcon from '@material-ui/icons/ExitToApp';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
 export default ({
-  user, anchorEl, handlePopoverClose, mobileToggleClass,
+  anchorEl, user, handlePopoverClose, mobileToggleClass,
 }) => {
   const { authHandler } = React.useContext(ApiHandlerContext);
-
   return (
     <Popover
       id="mouse-over-popover"

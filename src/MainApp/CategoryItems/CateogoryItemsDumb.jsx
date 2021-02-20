@@ -51,14 +51,30 @@ export default ({
 }) => {
   const classes = useStyles();
   const [selectedIdx, setSelectedIdx] = React.useState(-1);
-  const [dialogOpen, setDialogOpen] = React.useReducer((val) => !val, false);
+  const [dialogOpen, setDialogOpenValue] = React.useState(false);
 
+  const setDialogOpen = (val) => {
+    if (val) {
+      window.location.hash = '#view';
+    } else {
+      window.history.back();
+    }
+  };
   const handleItemClick = (selected_item_idx) => () => {
     setTimeout(() => {
       setSelectedIdx(selected_item_idx);
       setDialogOpen(true);
     }, 200);
   };
+
+  React.useEffect(() => {
+    if (window.location.hash === '#view') {
+      window.history.back();
+    }
+    const onHashChange = () => setDialogOpenValue(window.location.hash === '#view');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const [open, toggleOpen] = React.useReducer((val) => !val, false);
 
@@ -68,7 +84,6 @@ export default ({
       disableBackdropClick
       disableEscapeKeyDown
       aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">Delete category?</DialogTitle>
       <DialogContent>
@@ -126,7 +141,7 @@ export default ({
       </Grid>
 
       <AccountDialog
-        account={database.getDecryptedAccount(passwordList[selectedIdx])}
+        account={database.decryptFields(passwordList[selectedIdx])}
         categoriesMappings={categoriesMappings}
         {...{ dialogOpen, setDialogOpen }}
         mode={Mode.EXISTING_ACCOUNT}

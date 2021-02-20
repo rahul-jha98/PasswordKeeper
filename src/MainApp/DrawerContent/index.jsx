@@ -12,33 +12,35 @@ import AddCategoryButton from './AddCategoryButton';
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 
 export default ({
-  marginClassName, selectedIndex, setSelectedIndex, handleDrawerToggle,
+  selectedCategoryIndex, setSelectedCategoryIndex, handleDrawerToggle, marginClassName,
 }) => {
   const { database } = React.useContext(ApiHandlerContext);
   const [categories, setCategories] = React.useState([]);
 
   React.useEffect(() => {
+    // Subscribe for categories table once when component loads
     database.subscribeForTableUpdates('categories', (updatedList) => {
       setCategories(updatedList);
     });
   }, []);
 
   const handleListItemClick = (event, index) => {
-    if (index !== selectedIndex) {
-      setSelectedIndex(index);
+    if (index !== selectedCategoryIndex) {
+      setSelectedCategoryIndex(index);
     }
     handleDrawerToggle();
   };
 
   return (
     <div>
+      {/** Margin of the size app bar to make top item visible when drawer is under app bar */}
       <div className={marginClassName} />
       <Divider />
       <List>
         <ListItem
           button
           key="all"
-          selected={selectedIndex === -1}
+          selected={selectedCategoryIndex === -1}
           onClick={(event) => handleListItemClick(event, -1)}
         >
           <ListItemIcon>
@@ -49,7 +51,9 @@ export default ({
 
       </List>
       <Divider />
-      <CategoriesList {...{ categories, selectedIndex, handleListItemClick }} />
+      {/** Menu Item List of all the categories */}
+      <CategoriesList {...{ categories, selectedCategoryIndex, handleListItemClick }} />
+      {/** Button to add cateogyr */}
       <AddCategoryButton closeDrawer={handleDrawerToggle} />
     </div>
   );
