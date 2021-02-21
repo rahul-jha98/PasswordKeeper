@@ -14,7 +14,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import FormItems from './helpers/FormItems';
+import FormComponents from './FormComponents';
 
 const styles = (theme) => ({
   root: {
@@ -79,15 +79,19 @@ const DialogTitleWithEditAndDelete = withStyles(styles)((props) => {
 export default ({
   account, categoriesMappings, setIsDialogCancellable, classes, database, closeDialog,
 }) => {
+  // If account is not defined render nothing.
   if (!account) return null;
+  // Store the initialAccountState in a variable
   const initialAccountState = { ...account };
 
   const [localAccount, setLocalAccount] = React.useState(initialAccountState);
 
+  // Boolean to show if in edit mode or view mode
   const [editMode, toggleEditMode] = React.useReducer((value) => !value, false);
-
+  // Dialog should be cancellable in view mode but not in edit mode
   setIsDialogCancellable(!editMode);
 
+  // In normal mode the Title component is simple Dialog Title
   let Title = <DialogTitle>Edit Account Details</DialogTitle>;
   if (!editMode) {
     const onDeleteClicked = () => {
@@ -99,6 +103,7 @@ export default ({
       toggleEditMode();
     };
 
+    // In view Mode dialog title had edit and delete option
     Title = (
       <DialogTitleWithEditAndDelete onDeleteClicked={onDeleteClicked} onEditClicked={onEditClicked}>
         View Account Details
@@ -107,7 +112,7 @@ export default ({
   }
 
   const Content = (
-    <FormItems
+    <FormComponents
       {...{ classes, categoriesMappings }}
       account={localAccount}
       setAccount={setLocalAccount}
@@ -115,12 +120,14 @@ export default ({
     />
   );
 
+  // In view mode there is no actions to render
   let Actions = null;
   if (editMode) {
-    const updateAccount = () => {
-      database.updateAccount(localAccount);
+    const updateAccount = async () => {
+      await database.updateAccount(localAccount);
       toggleEditMode();
     };
+    // In edit mode cancel and update options are provided
     Actions = (
       <DialogActions className={classes.actions}>
         <Button autoFocus onClick={() => { toggleEditMode(); setLocalAccount(initialAccountState); }} color="primary">

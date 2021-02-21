@@ -14,12 +14,19 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import CopyIcon from './CopyIcon';
 import ApiHandlerContext from '../../provider/ApiHandlerContext';
 
+// To check if a URL is visitable, check if it begins with http:// or https://
+const isUrlVisitable = (text) => (text.startsWith('http://') || text.startsWith('https://'));
+
 const InputComponent = ({
   label, className, text, onTextChange, variant, size, type, disabled, showToast,
 }) => {
   let adornment = null;
   if (variant === 'filled' && text) {
-    if (type === '@' && (text.startsWith('http://') || text.startsWith('https://'))) {
+    // A filled variant is used only in view mode so
+    // if variant is filled and text is not empty
+    if (type === '@' && isUrlVisitable(text)) {
+      // If type is URL and url can be visited in new tab
+      // set the adornment to OpenInNewTab icon
       adornment = (
         <Tooltip title="Open in new tab">
           <IconButton
@@ -35,6 +42,7 @@ const InputComponent = ({
 
       );
     } else {
+      // Else provide the copy adornment
       adornment = (
         <Tooltip title="Copy">
           <IconButton
@@ -48,6 +56,7 @@ const InputComponent = ({
       );
     }
   }
+  // Depending on variant choose one of the Input types
   const Input = variant === 'filled' ? FilledInput : OutlinedInput;
   return (
     <FormControl className={className} size={size} variant={variant} fullWidth disabled={disabled}>
@@ -64,7 +73,7 @@ const InputComponent = ({
   );
 };
 const PasswordComponent = ({
-  label, className, text, onTextChange, variant, size, disabled,
+  label, className, text, onTextChange, variant, size, disabled, showToast,
 }) => {
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
   const handleMouseDownPassword = (event) => {
@@ -85,7 +94,7 @@ const PasswordComponent = ({
             {variant === 'filled' ? (
               <IconButton
                 aria-label="copy text"
-                onClick={() => { navigator.clipboard.writeText(text); }}
+                onClick={() => { navigator.clipboard.writeText(text); showToast('Copied to clipboard'); }}
                 onMouseDown={handleMouseDownPassword}
                 edge="end"
               >
@@ -111,27 +120,32 @@ const PasswordComponent = ({
 
 export default ({
   account, category, className, handleTextChange, variant, size, disabled,
-}) => Array.from({ length: 5 }, (_, i) => `field${i + 1}`).map((columnName) => {
+}) => {
   const { showToast } = React.useContext(ApiHandlerContext);
-  const name = category[columnName];
-  if (!name) return null;
-  let Component = InputComponent;
-  const type = name[0];
-  const label = name.slice(2);
-  console.log(type);
-  if (type === '*') {
-    Component = PasswordComponent;
-  }
-  return (
-    <Component
-      {...{
-        label, columnName, className, variant, size, showToast,
-      }}
-      key={label}
-      type={type}
-      text={account[columnName]}
-      onTextChange={handleTextChange(columnName)}
-      disabled={disabled}
-    />
-  );
-});
+
+  return Array.from({ length: 5 }, (_, i) => `field${i + 1}`).map((columnName) => {
+    // Let's say columnName is field1 so first extract the name of field
+    const name = category[columnName];
+    // If no name is found render nothing
+    if (!name) return null;
+
+    // Since the name is of the form $-Some Name, extract the type and label
+    const type = name[0];
+    const label = name.slice(2);
+    // Depending on type, set Component to be either PasswordComponent or InputComponent
+    const Component = (type === '*') ? PasswordComponent : InputComponent;
+
+    return (
+      <Component
+        {...{
+          label, columnName, className, variant, size, showToast,
+        }}
+        key={label}
+        type={type}
+        text={account[columnName]}
+        onTextChange={handleTextChange(columnName)}
+        disabled={disabled}
+      />
+    );
+  });
+};

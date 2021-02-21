@@ -45,7 +45,7 @@ export default class MainApp extends React.Component {
 
   onPasswordLoaded = (loading) => {
     if (loading) {
-      this.setState({ action: null, message: 'Loading Data from Sheet', email: null });
+      this.setState({ action: null, message: 'Preparing Google Drive for use...', email: null });
     } else {
       this.setState({ loaded: true });
     }

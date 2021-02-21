@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'fixed',
     bottom: theme.spacing(2),
     textAlign: 'center',
+    color: '#e0e0e0',
   },
 }));
 /**
@@ -72,7 +73,7 @@ export default (props) => {
   if (action === 'verify') {
     content = <VerifyPassword database={database} onPasswordLoaded={onPasswordLoaded} />;
   } else if (action === 'add') {
-    content = <SetPassword database={database} onPasswordLoaded={onPasswordLoaded} />;
+    content = <SetPassword database={database} onPasswordLoaded={onPasswordLoaded} email={email} />;
   }
   return (
     <div>

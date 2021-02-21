@@ -6,7 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import ApiHandlerContext from '../provider/ApiHandlerContext';
-import AccountDialogContent from './ExistingAccountDialogContent';
+import ExistingAccountDialogContent from './ExistingAccountDialogContent';
 import NewAccountDialogContent from './NewAccountDialogContent';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,22 +36,25 @@ export default (props) => {
   const {
     dialogOpen, setDialogOpen, mode, ...rest
   } = props;
-
   const classes = useStyles();
+
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const { database, showToast } = React.useContext(ApiHandlerContext);
+  // State variable to conrol whether the dialog is cancellable when clicked outside
+  const [isDialogCancellable, setIsDialogCancellable] = React.useState(true);
 
   const closeDialog = () => {
     setDialogOpen(false);
   };
 
-  const [isDialogCancellable, setIsDialogCancellable] = React.useState(true);
-
+  // Depending on the mode either the NewAccountDialogContent or
+  // ExistingAccountDialogContent is rendered
   const DialogContentComponent = (mode === Mode.NEW_ACCOUNT)
     ? NewAccountDialogContent
-    : AccountDialogContent;
+    : ExistingAccountDialogContent;
+
   return (
     <Dialog
       fullScreen={fullScreen}

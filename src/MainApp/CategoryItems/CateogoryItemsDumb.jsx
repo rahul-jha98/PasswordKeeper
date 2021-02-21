@@ -73,11 +73,14 @@ export default ({
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
+  // handle click on an item in the list
   const handleItemClick = (selected_item_idx) => () => {
+    // set a delay of 250ms to play the click animation on the card
+    // then open the dialog to view account details
     setTimeout(() => {
       setSelectedIdx(selected_item_idx);
       setDialogOpen(true);
-    }, 200);
+    }, 250);
   };
 
   // State variable to control visibility of confirmation dialog

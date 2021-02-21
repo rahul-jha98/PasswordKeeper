@@ -201,8 +201,8 @@ export default class Database {
       ['Web Account', 'public', '@-Website Link', '$-Username', '*-Password'],
       ['Email', 'mail', '$-Email Account', '*-Password'],
       ['Credit Card', 'card', '$-Card Number', '$-Expiry Date', '*-CVV'],
-      ['Wifi Account', 'wifi', '*-Password'],
-      ['Linked Accounts', 'link', '$-Connected Account'],
+      ['Wifi Account', 'wifi', '$-Wifi Name', '*-Password'],
+      ['Linked Account', 'link', '$-Connected Account'],
     ]);
 
     /**

@@ -37,27 +37,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const initialAccount = {
+// Setting the default categories
+const initialCategoryFields = {
   name: '', icon: 'public', field1: '@-Website Link', field2: '$-Username', field3: '*-Password', field4: '', field5: '',
 };
 export default ({ open, toggleOpen }) => {
-  const { database, showToast } = React.useContext(ApiHandlerContext);
-  const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const [fields, setFields] = React.useState(initialAccount);
+  const { database, showToast } = React.useContext(ApiHandlerContext);
+
+  const classes = useStyles();
+
+  const [fields, setFields] = React.useState(initialCategoryFields);
   const [errorMessage, setErrorMessage] = React.useState('');
+
   const [disabled, toggleDisabled] = React.useReducer((val) => !val, false);
 
+  /**
+   * Get setter for a particular prop in fields
+   * @param {string} prop name of the property in the field that needs to be changed
+   * @returns {function} that takes a value and set the specified
+   *                      property in fields to that value
+   */
   const changeField = (prop) => (value) => {
     setFields({ ...fields, [prop]: value });
   };
 
+  /**
+   * Handle closing the dialog
+   */
   const closeDialog = () => {
+    // First call toggle open to hide the dialog
     toggleOpen();
+    // Wait for 300ms for close animation to finish and
+    // then reset the fields to initialCategoryFields for
+    // next time
     setTimeout(() => {
-      setFields(initialAccount);
+      setFields(initialCategoryFields);
     }, 300);
   };
 
@@ -93,8 +110,8 @@ export default ({ open, toggleOpen }) => {
       setErrorMessage('Network Error. Try again later');
     }
   };
-  return (
 
+  return (
     <Dialog
       fullScreen={fullScreen}
       open={open}

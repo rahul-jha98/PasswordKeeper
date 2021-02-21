@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import { useTheme } from '@material-ui/core/styles';
 
 export default ({
-  database, onPasswordLoaded,
+  database, onPasswordLoaded, email,
 }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
@@ -43,11 +43,19 @@ export default ({
     // Clear the error message and disable the buttons and text inputs
     setErrorMessage('');
     toggleEnabled();
+    const usersEmail = email;
     // Set loading state to loading
     onPasswordLoaded('loading');
     try {
       // Initialize the database with the given password
       await database.initialize(password);
+      await database.insertAccount({
+        name: 'PasswordManager',
+        category: 'Linked Account',
+        note: `Default account added to show you have a GMail account linked with PasswordManager.\n
+          Add more of your passwords and feel free to delete this one`,
+        field1: `GMail - ${usersEmail}`,
+      });
       // notify that the password has been loaded
       onPasswordLoaded();
     } catch (err) {

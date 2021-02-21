@@ -2,24 +2,35 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 
+// The following prefix is for the possible types
+// $- being normal text, *- being password and @- for weblink
 const types = ['$-', '*-', '@-'];
 
 export default ({
-  label, text, setText, className, initialType, disabled,
+  label, text, setText, disabled, className, initialType,
 }) => {
+  // The text is of the format *-Name of field so we slice from 2nd index
+  // to extract only Name from it
   const value = text.slice(2);
 
+  // If an initialType is passed, use that or by default set it to 0
   const [typeIdx, setTypeIdx] = React.useState(initialType || 0);
+
+  // Whenever the typeIdx changes, call setText with the updated prefix
   React.useEffect(() => {
     setText(`${types[typeIdx]}${value}`);
   }, [typeIdx]);
+
   return (
     <div>
       <TextField
         id={label}
         label={label}
         value={value}
-        onChange={(event) => { setText(`${types[typeIdx]}${event.target.value}`); }}
+        onChange={(event) => {
+          /* If the user enters a value call set text with prefix appended */
+          setText(`${types[typeIdx]}${event.target.value}`);
+        }}
         className={className}
         fullWidth
         variant="outlined"
