@@ -6,7 +6,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
@@ -52,6 +51,12 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  logoImg: {
+    [theme.breakpoints.down('xs')]: {
+      maxWidth: 200,
+      marginTop: 4,
+    },
+  },
   fab: {
     position: 'fixed',
     bottom: theme.spacing(4),
@@ -92,9 +97,10 @@ export default (props) => {
       >
         <MenuIcon />
       </IconButton>
-      <Typography variant="h6" noWrap className={classes.title}>
-        PasswordManager
-      </Typography>
+      <div className={classes.title}>
+
+        <img src="./assets/logowhite.svg" alt="logo" className={classes.logoImg} />
+      </div>
     </AppBar>
   );
 

@@ -73,8 +73,8 @@ export default class HomePage extends React.Component {
               <p className="btn-text"><b>Sign In with Google</b></p>
             </div>
           </div>
-          <div className="landing">
-            <Typography variant="h5" style={{ marginTop: 32 }}> Features</Typography>
+          <div className="landing heavyTopMargin">
+            <Typography variant="h5"> Features</Typography>
             <div className="featuregrid">
               {featureItems.map((item) => (
                 <FeatureItem {...item} />

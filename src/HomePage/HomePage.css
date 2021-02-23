@@ -1,6 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:500');
 .google-btn {
-    width: 184px;
+    width: 200px;
     height: 42px;
     margin-top: 6vh;
     background-color: #4285f4;
@@ -29,7 +28,7 @@
     color: #fff;
     font-size: 14px;
     letter-spacing: 0.2px;
-    font-family: "Roboto";
+    font-family: "Work Sans";
   }
   .google-btn:hover {
     box-shadow: 0 0 6px #4285f4;
@@ -66,4 +65,8 @@
   .featuregrid img {
       width: 70%;
       max-width: 360px;
+  }
+
+  .heavyTopMargin {
+      margin-top: 64px;
   }
