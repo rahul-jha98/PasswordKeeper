@@ -6,8 +6,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Button } from '@material-ui/core';
-import SetPassword from './SetPassword';
 import VerifyPassword from './VerifyPassword';
+
+const SetPassword = React.lazy(() => import('./SetPassword'));
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -73,7 +74,14 @@ export default (props) => {
   if (action === 'verify') {
     content = <VerifyPassword database={database} onPasswordLoaded={onPasswordLoaded} />;
   } else if (action === 'add') {
-    content = <SetPassword database={database} onPasswordLoaded={onPasswordLoaded} email={email} />;
+    const loading = <CircularProgress color="inherit" />;
+
+    content = (
+      <React.Suspense fallback={loading}>
+        <SetPassword database={database} onPasswordLoaded={onPasswordLoaded} email={email} />
+        {' '}
+      </React.Suspense>
+    );
   }
   return (
     <div>

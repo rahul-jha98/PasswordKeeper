@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   appBar: {
+    color: '#fcfcfc',
     [theme.breakpoints.up('md')]: {
       marginLeft: drawerWidth,
       zIndex: theme.zIndex.drawer + 1,
