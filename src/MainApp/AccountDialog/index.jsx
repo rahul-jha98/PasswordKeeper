@@ -3,7 +3,8 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
+import useTheme from '@material-ui/core/styles/useTheme';
 
 import ApiHandlerContext from '../provider/ApiHandlerContext';
 import ExistingAccountDialogContent from './ExistingAccountDialogContent';

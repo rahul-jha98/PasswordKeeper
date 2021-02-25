@@ -86,6 +86,13 @@
   background: #1669F2;
 }
 
+.footer {
+  margin: -18px;
+  text-align: center;
+  background-color: #eeeeee;
+  padding: 12px;
+}
+
 .heavyTopMargin {
   margin-top: 64px;
 }

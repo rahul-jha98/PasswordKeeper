@@ -4,6 +4,7 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import './HomePage.css';
+import Footer from './Footer';
 
 const FeatureItem = ({ logoUrl, header, content }) => (
   <div className="item">
@@ -48,7 +49,7 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <div id="#home">
-        <div className="background"><img src="/assets//background.svg" alt="background" /></div>
+        <div className="background"><img src="/assets/background.svg" alt="background" /></div>
         <Paper className="container" elevation={2}>
           <div className="landing">
             <img src="./assets/Logo.svg" alt="hello" width="100%" style={{ maxWidth: 450 }} />
@@ -81,6 +82,9 @@ export default class HomePage extends React.Component {
                 <FeatureItem {...item} />
               ))}
             </div>
+          </div>
+          <div className="heavyTopMargin footer">
+            <Footer />
           </div>
         </Paper>
       </div>
