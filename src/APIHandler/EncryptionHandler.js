@@ -1,4 +1,5 @@
-import CryptoJS from 'crypto-js';
+import AES from 'crypto-js/aes';
+import UTF8 from 'crypto-js/enc-utf8';
 
 /**
  * @class Class to handle all the encryption and decryption related stuff
@@ -18,16 +19,16 @@ export default class EncryptionHandler {
    * @param {string} text the text that needs to be encrypted
    * @returns {string} the AES encrypted string
    */
-  encrypt = (text) => CryptoJS.AES.encrypt(text, this.key).toString();
+  encrypt = (text) => AES.encrypt(text, this.key).toString();
 
   /**
    * Decrypt an AES encrypted text
    * @param {string} encrypted the encrypted text that needs to be decrypted
    * @returns {string} the decrypted string
    */
-  decrypt = (encrypted) => CryptoJS.AES.decrypt(encrypted, this.key).toString(CryptoJS.enc.Utf8);
+  decrypt = (encrypted) => AES.decrypt(encrypted, this.key).toString(UTF8);
 
-  validate = (text, key, value) => CryptoJS.AES
+  validate = (text, key, value) => AES
     .decrypt(value, key)
-    .toString(CryptoJS.enc.Utf8) === text
+    .toString(UTF8) === text
 }

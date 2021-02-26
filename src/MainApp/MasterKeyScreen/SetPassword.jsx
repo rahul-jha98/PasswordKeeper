@@ -24,6 +24,7 @@ export default ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
+  const [dialogContentIdx, setDialogContentIdx] = React.useState(0);
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
@@ -69,14 +70,45 @@ export default ({
     event.preventDefault();
   };
 
-  return (
-    <Dialog
-      open
-      fullWidth
-      disableBackdropClick
-      disableEscapeKeyDown
-      fullScreen={fullScreen}
-    >
+  const driveFolderDialogContent = (
+    <>
+      <DialogTitle>Drive Folder</DialogTitle>
+      <DialogContent>
+        <img src="/assets/Drive.png" width="100%" alt="drive" />
+        <Typography variant="body2" color="textSecondary">
+          A folder has been created in your Google Drive which contains a Google Sheet
+          which will be used by the web app to store its data. Do not delete this folder or
+          the sheet else all data will be lost.
+        </Typography>
+      </DialogContent>
+      <DialogActions style={{ paddingRight: '24px' }}>
+        <Button onClick={() => { setDialogContentIdx(1); }} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </>
+  );
+
+  const rememberPasswordDialogContent = (
+    <>
+      <DialogTitle>Note</DialogTitle>
+      <DialogContent>
+        <Typography variant="body1">
+          In order to access your data you need to set a master password which
+          will be needed to access your data in future.
+
+          You need to remember this password since it cannot be reset or recovered.
+        </Typography>
+      </DialogContent>
+      <DialogActions style={{ paddingRight: '24px' }}>
+        <Button onClick={() => { setDialogContentIdx(2); }} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </>
+  );
+  const passwordDialogContent = (
+    <>
       <DialogTitle id="responsive-dialog-title">Set Password</DialogTitle>
       <DialogContent>
         <Typography variant="body2" color="textSecondary">
@@ -136,6 +168,22 @@ export default ({
           Save
         </Button>
       </DialogActions>
+    </>
+  );
+  const contentArray = [
+    driveFolderDialogContent,
+    rememberPasswordDialogContent,
+    passwordDialogContent,
+  ];
+  return (
+    <Dialog
+      open
+      fullWidth
+      disableBackdropClick
+      disableEscapeKeyDown
+      fullScreen={fullScreen}
+    >
+      {contentArray[dialogContentIdx]}
     </Dialog>
   );
 };

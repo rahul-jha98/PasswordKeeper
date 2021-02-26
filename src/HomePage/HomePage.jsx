@@ -13,6 +13,8 @@ const FeatureItem = ({ logoUrl, header, content }) => (
     <Typography
       variant="body1"
       color="textSecondary"
+      align="justify"
+      style={{ textAlignLast: 'center' }}
     >
       {content}
     </Typography>
@@ -61,7 +63,6 @@ export default class HomePage extends React.Component {
               gutterBottom
             >
               Securely keep you passwords in your Google Drive
-
             </Typography>
 
             <div className="google-btn" onClick={this.handleGoogleSignIn}>
@@ -76,7 +77,7 @@ export default class HomePage extends React.Component {
             </div>
           </div>
           <div className="landing heavyTopMargin">
-            <Typography variant="h5"> Features</Typography>
+            <Typography variant="h5">Features</Typography>
             <div className="featuregrid">
               {featureItems.map((item) => (
                 <FeatureItem {...item} />

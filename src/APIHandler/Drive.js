@@ -23,7 +23,7 @@ class Drive {
    * @param {fileLoadCallback} onFolderLoaded Callback to handle when folder loaded
    */
   getFolder = (onFolderLoaded) => {
-    const folderName = 'drivepasswordmanager';
+    const folderName = 'drivepasswordmanager2';
 
     this.gapi.client.drive.files
       .list({

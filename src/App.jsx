@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
 import './App.css';
 import HomePage from './HomePage';
 import GoogleAuth from './APIHandler/Auth';
@@ -35,7 +36,7 @@ const theme = createMuiTheme({
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { user: null };
+    this.state = { user: null, toast: '' };
     this.authHandler = new GoogleAuth();
   }
 
@@ -47,6 +48,9 @@ class App extends React.Component {
       },
       (error) => {
         console.log(error);
+        if (error.details.includes('Cookies')) {
+          this.setState({ toast: 'Cookies are disabled. Google Sign In will not work.' });
+        }
       },
     );
   }
@@ -55,11 +59,22 @@ class App extends React.Component {
     const { user } = this.state;
     // Based on the whenther user state is null or not we render
     // HomePage or the MainApp component
+    let screen = <MainApp authHandler={this.authHandler} />;
     if (!user) {
-      return <HomePage authHandler={this.authHandler} />;
+      screen = <HomePage authHandler={this.authHandler} />;
     }
     return (
-      <MainApp authHandler={this.authHandler} />
+      <>
+        {screen}
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={Boolean(this.state.toast)}
+          autoHideDuration={5000}
+          message={this.state.toast}
+          onClose={() => { this.setState({ toast: '' }); }}
+          key={this.state.toast}
+        />
+      </>
     );
   }
 }
