@@ -20,7 +20,7 @@ export default ({
     };
   }
   const variant = mode === 'view' ? 'filled' : 'outlined';
-  const size = mode === 'view' ? 'large' : 'small';
+  const size = mode === 'view' ? 'medium' : 'small';
 
   const CategoryInput = mode === 'view' ? (
     <TextField
@@ -80,7 +80,7 @@ export default ({
       <TextField
         className={classes.marginTop4}
         id="note"
-        label="Note"
+        label="Notes"
         variant={variant}
         value={account.note}
         multiline
@@ -89,6 +89,7 @@ export default ({
         size={size}
         rows={3}
         disabled={disabled}
+        placeholder="Notes are not encrypted so make sure you don't enter anything sensetive here"
       />
     </>
   );

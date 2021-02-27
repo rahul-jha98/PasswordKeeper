@@ -4,7 +4,7 @@ import EncryptionHandler from './EncryptionHandler';
 export default class Database {
   constructor() {
     this.callbacksList = {};
-    this.encryptionHander = new EncryptionHandler();
+    this.encryptionHandler = new EncryptionHandler();
     this.fields = Array.from({ length: 5 }, (_, i) => `field${i + 1}`);
   }
 
@@ -43,13 +43,10 @@ export default class Database {
    * @returns {boolean} Whether the password is correct
    */
   verifyPassword = (password) => {
-    const savedEncrypted = this.db.getTable('preferences').getRow(0).value;
+    const [[encryptedKey1], [encryptedKey2], [hashValue]] = this.db.getTable('preferences').getDataArray();
 
-    if (this.encryptionHander.validate('nowyouseeme', password, savedEncrypted)) {
-      this.encryptionHander.setKey(password);
-      return true;
-    }
-    return false;
+    return this.encryptionHandler
+      .validateMasterKey(password, encryptedKey1, encryptedKey2, hashValue);
   }
 
   // METHODS FOR DATA TABLE /////////////////////////////////////////////////
@@ -169,7 +166,8 @@ export default class Database {
    */
   initialize = async (masterKey) => {
     // Set the key for encryption handler
-    this.encryptionHander.setKey(masterKey);
+    const data = this.encryptionHandler.encryptMasterKey(masterKey);
+    const dataObject = data.map((val) => ({ value: val }));
 
     /**
      * First we create a table named data which will have the columns
@@ -193,8 +191,8 @@ export default class Database {
      * Finally to create a table named preferences which will have just one
      * column named value.
      */
-    await this.db.addTable('preferences', ['value'], 2);
-    this.db.getTable('preferences').insertOne([this.encryptionHander.encrypt('nowyouseeme')], false);
+    await this.db.addTable('preferences', ['value'], 4);
+    this.db.getTable('preferences').insert(dataObject, false);
 
     // In the categories table we populate the set of initial categories
     await this.db.getTable('categories').insertMany([
@@ -242,12 +240,9 @@ export default class Database {
     const encryptedDetails = { ...details };
     this.fields.forEach((field) => {
       if (encryptedDetails[field] && encryptedDetails[field].length) {
-        encryptedDetails[field] = this.encryptionHander.encrypt(encryptedDetails[field]);
+        encryptedDetails[field] = this.encryptionHandler.encrypt(encryptedDetails[field]);
       }
     });
-    if (encryptedDetails.note && encryptedDetails.note.length) {
-      encryptedDetails.note = this.encryptionHander.encrypt(encryptedDetails.note);
-    }
 
     return encryptedDetails;
   }
@@ -263,14 +258,12 @@ export default class Database {
 
     this.fields.forEach((field) => {
       if (decryptedDetails[field]) {
-        decryptedDetails[field] = this.encryptionHander.decrypt(encryptedDetails[field]);
+        decryptedDetails[field] = this.encryptionHandler.decrypt(encryptedDetails[field]);
       } else {
         decryptedDetails[field] = '';
       }
     });
-    if (decryptedDetails.note) {
-      decryptedDetails.note = this.encryptionHander.decrypt(encryptedDetails.note);
-    } else {
+    if (!decryptedDetails.note) {
       decryptedDetails.note = '';
     }
     return decryptedDetails;

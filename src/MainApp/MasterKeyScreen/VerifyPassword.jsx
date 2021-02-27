@@ -49,6 +49,7 @@ export default ({
         setErrorMessage('Password Entered is Incorrect');
       }
     } catch (err) {
+      console.log(err);
       setErrorMessage('Error verifying password. Try again later');
     }
   };

@@ -25,6 +25,7 @@ export default ({
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const [dialogContentIdx, setDialogContentIdx] = React.useState(0);
+
   const [password, setPassword] = React.useState('');
   const [errorMessage, setErrorMessage] = React.useState('');
   const [showPassword, toggleShowPassword] = React.useReducer((val) => !val, false);
@@ -47,14 +48,14 @@ export default ({
     const usersEmail = email;
     // Set loading state to loading
     onPasswordLoaded('loading');
+
     try {
       // Initialize the database with the given password
       await database.initialize(password);
       await database.insertAccount({
         name: 'PasswordManager',
         category: 'Linked Account',
-        note: `Default account added to show you have a GMail account linked with PasswordManager.\n
-          Add more of your passwords and feel free to delete this one`,
+        note: 'Default account added to show you have a GMail account linked with PasswordManager.',
         field1: `GMail - ${usersEmail}`,
       });
       // notify that the password has been loaded
