@@ -19,7 +19,7 @@
      <meta name="twitter:description" content="Web-app to help keep your passwords securely stored in your Google Drive">
      <meta name="twitter:image" 
        content="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/main/image_assets/PasswordKeeper.png">
-       
+
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Password Keeper">
     <meta itemprop="description"
@@ -35,10 +35,71 @@
     <meta property="og:image"
       content="https://raw.githubusercontent.com/rahul-jha98/PasswordKeeper/main/image_assets/PasswordKeeper.png">
 
+
+
+    
+    <style>
+      .fullScreenWrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px; 
+        position: relative;
+      }
+
+      .double-bounce1, .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #CFCFCF;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+        
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+      }
+      
+      .double-bounce2 {
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+      }
+      
+      @-webkit-keyframes sk-bounce {
+        0%, 100% { -webkit-transform: scale(0.0) }
+        50% { -webkit-transform: scale(1.0) }
+      }
+      
+      @keyframes sk-bounce {
+        0%, 100% { 
+          transform: scale(0.0);
+          -webkit-transform: scale(0.0);
+        } 50% { 
+          transform: scale(1.0);
+          -webkit-transform: scale(1.0);
+        }
+      }
+    </style>
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div class="fullScreenWrapper">
+        <object data="%PUBLIC_URL%/greylogo.svg" type="image/svg+xml">
+        </object>
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+      </div>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
