@@ -45,6 +45,7 @@ export default ({ className, children }) => {
   const user = authHandler.getUser();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const handlePopoverOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };

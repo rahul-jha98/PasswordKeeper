@@ -37,40 +37,67 @@ export default class EncryptionHandler {
   generate_key = () => {
     const len = Math.floor((Math.random() * 10) + 28);
     let key = '';
-    const hex = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-=';
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()-=';
 
     for (let i = 0; i < len; i += 1) {
-      key += hex.charAt(Math.floor(Math.random() * 74));
+      key += chars.charAt(Math.floor(Math.random() * 74));
     }
     return key;
   }
 
-  hash = (data) => SHA3(data, {})
-    .toString(encBase64)
+  hash = (data, iterations) => {
+    let hash = data;
+    for (let i = 0; i < iterations; i += 1) {
+      hash = SHA3(hash, {});
+    }
+    return hash.toString(encBase64);
+  }
 
   encryptWithKey = (text, key) => AES.encrypt(text, key).toString();
 
   decryptWithKey = (text, key) => AES.decrypt(text, key).toString(UTF8);
 
-  validateMasterKey = (masterKeyToValidate, encryptedKey1, encryptedKey2, hashValue) => {
-    const key1 = this.decryptWithKey(encryptedKey1, masterKeyToValidate);
-    const key2 = this.decryptWithKey(encryptedKey2, masterKeyToValidate);
-    if (this.hash(key1 + key2) === hashValue) {
+  addSalt = (text, salt) => {
+    let saltedText = '';
+    const textSize = text.length;
+    const saltSize = salt.length;
+    for (let i = 0; i < textSize; i += 1) {
+      const ascii = text.codePointAt(0);
+      if (ascii % 2 === 1) {
+        saltedText += salt[ascii % saltSize];
+      } else {
+        saltedText += ascii;
+      }
+    }
+    console.log(text);
+    console.log(saltedText);
+    return saltedText;
+  }
+
+  validateMasterKey = (masterKeyToValidate, encryptedKey1, encryptedKey2, hashValue, salt) => {
+    const hashedMasterKey = this.hash(masterKeyToValidate, 10000);
+    const saltAddedKey = this.addSalt(hashedMasterKey, salt);
+    const hashedSaltedKey = this.hash(saltAddedKey, 15000);
+
+    const key1 = this.decryptWithKey(encryptedKey1, hashedSaltedKey);
+    const key2 = this.decryptWithKey(encryptedKey2, hashedSaltedKey);
+    if (this.hash(key1 + key2, 5000) === hashValue) {
       this.setKeys(masterKeyToValidate, key1, key2);
       return true;
     }
     return false;
   }
 
-  encryptMasterKey = (masterKey) => {
+  encryptMasterKey = (masterKey, salt) => {
+    const hashedMasterKey = this.hash(masterKey, 10000);
+    const saltAddedKey = this.addSalt(hashedMasterKey, salt);
+    const hashedSaltedKey = this.hash(saltAddedKey, 15000);
     const key1 = this.generate_key();
     const key2 = this.generate_key();
-    console.log(key1);
-    console.log(key2);
-    const encryptedKey1 = this.encryptWithKey(key1, masterKey);
-    const encryptedKey2 = this.encryptWithKey(key2, masterKey);
-    const hashedKey = this.hash(key1 + key2);
-    console.log(hashedKey);
+
+    const encryptedKey1 = this.encryptWithKey(key1, hashedSaltedKey);
+    const encryptedKey2 = this.encryptWithKey(key2, hashedSaltedKey);
+    const hashedKey = this.hash(key1 + key2, 5000);
     this.setKeys(masterKey, key1, key2);
 
     return [encryptedKey1, encryptedKey2, hashedKey];

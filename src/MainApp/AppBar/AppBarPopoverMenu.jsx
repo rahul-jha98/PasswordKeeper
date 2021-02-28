@@ -12,63 +12,71 @@ import InfoIcon from '@material-ui/icons/InfoOutlined';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 
 import ApiHandlerContext from '../provider/ApiHandlerContext';
+import AboutDialog from './AboutDialog';
 
 export default ({
   anchorEl, user, handlePopoverClose, mobileToggleClass,
 }) => {
   const { authHandler } = React.useContext(ApiHandlerContext);
+  const [aboutOpen, toggleAboutOpen] = React.useReducer(
+    (val) => !val,
+    false,
+  );
   return (
-    <Popover
-      id="mouse-over-popover"
-      open={anchorEl}
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-      onClose={handlePopoverClose}
-      disableRestoreFocus
-    >
-
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" src={user.getImageUrl()} />
-                }
-        title={user.getName()}
-        subheader={user.getEmail()}
-      />
-
-      <a
-        href="https://github.com/rahul-jha98/DrivePasswordManager"
-        rel="noopener noreferrer"
-        target="_blank"
-        style={{ color: 'inherit', textDecoration: 'none' }}
+    <>
+      <Popover
+        id="mouse-over-popover"
+        open={anchorEl}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
       >
-        <MenuItem onClick={handlePopoverClose} className={mobileToggleClass}>
+
+        <CardHeader
+          avatar={
+            <Avatar aria-label="recipe" src={user.getImageUrl()} />
+                }
+          title={user.getName()}
+          subheader={user.getEmail()}
+        />
+
+        <a
+          href="https://github.com/rahul-jha98/DrivePasswordManager"
+          rel="noopener noreferrer"
+          target="_blank"
+          style={{ color: 'inherit', textDecoration: 'none' }}
+        >
+          <MenuItem onClick={handlePopoverClose} className={mobileToggleClass}>
+            <ListItemIcon>
+              <GitHubIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Github Repo" />
+          </MenuItem>
+        </a>
+        <MenuItem onClick={() => { toggleAboutOpen(); handlePopoverClose(); }}>
           <ListItemIcon>
-            <GitHubIcon fontSize="small" />
+            <InfoIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Github Repo" />
+          <ListItemText primary="About" />
         </MenuItem>
-      </a>
-      <MenuItem onClick={handlePopoverClose}>
-        <ListItemIcon>
-          <InfoIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="About" />
-      </MenuItem>
 
-      <MenuItem onClick={authHandler.signOutFromGoogle}>
-        <ListItemIcon>
-          <LogoutIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText primary="Logout" />
-      </MenuItem>
+        <MenuItem onClick={authHandler.signOutFromGoogle}>
+          <ListItemIcon>
+            <LogoutIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </MenuItem>
 
-    </Popover>
+      </Popover>
+      <AboutDialog aboutOpen={aboutOpen} toggleAboutOpen={toggleAboutOpen} />
+    </>
   );
 };

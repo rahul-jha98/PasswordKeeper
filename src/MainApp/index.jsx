@@ -25,8 +25,9 @@ export default class MainApp extends React.Component {
 
   componentDidMount = () => {
     this.drive.getFolder(() => {
-      this.drive.getSheetFile(async (sheet_file_id) => {
+      this.drive.getSheetFile(async (sheet_file_id, user_id) => {
         this.database.setFileId(sheet_file_id);
+        this.database.setUserId(user_id);
         this.database.setAccessToken(this.props.authHandler.getAuthToken());
         const shouldInitialize = await this.database.connect();
 

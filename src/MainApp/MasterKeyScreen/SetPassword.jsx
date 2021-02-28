@@ -42,6 +42,17 @@ export default ({
       setErrorMessage('Passwords Do Not Match');
       return;
     }
+    if (password.length < 8) {
+      setErrorMessage('Passwords must be atleast 8 characters long');
+      return;
+    }
+    // if (password.search(/[a-z]/i) < 0
+    //   || password.search(/[A-Z]/i) < 0
+    //   || password.search(/[0-9]/i) < 0
+    //   || password.search(/[!@#$%^&*()-=+_|]/i)) {
+    //   setErrorMessage('Passwords Must be atleast 8 characters long');
+    //   return;
+    // }
     // Clear the error message and disable the buttons and text inputs
     setErrorMessage('');
     toggleEnabled();
@@ -62,6 +73,7 @@ export default ({
       onPasswordLoaded();
     } catch (err) {
       // In case of error reanable the buttons and set error message
+      console.log(err);
       toggleEnabled();
       setErrorMessage('Network Error. Try again later');
     }
@@ -166,7 +178,7 @@ export default ({
       </DialogContent>
       <DialogActions style={{ paddingRight: '24px' }}>
         <Button onClick={setMasterPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained">
-          Save
+          {!enabled && password.length > 0 ? 'Encrypting...' : 'Save'}
         </Button>
       </DialogActions>
     </>

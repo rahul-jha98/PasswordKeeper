@@ -18,6 +18,15 @@ export default class Database {
   }
 
   /**
+   * Set the spreadsheet id of the sheet that is to be used
+   * as a database
+   * @param {string} sheetsId spreasheet id
+   */
+  setUserId = (userId) => {
+    this.userId = userId;
+  }
+
+  /**
    * Set the oauth token for the user that has signed in which
    * will be used to access the sheet file
    * @param {string} token authToken for the user
@@ -46,7 +55,7 @@ export default class Database {
     const [[encryptedKey1], [encryptedKey2], [hashValue]] = this.db.getTable('preferences').getDataArray();
 
     return this.encryptionHandler
-      .validateMasterKey(password, encryptedKey1, encryptedKey2, hashValue);
+      .validateMasterKey(password, encryptedKey1, encryptedKey2, hashValue, this.userId);
   }
 
   // METHODS FOR DATA TABLE /////////////////////////////////////////////////
@@ -166,7 +175,7 @@ export default class Database {
    */
   initialize = async (masterKey) => {
     // Set the key for encryption handler
-    const data = this.encryptionHandler.encryptMasterKey(masterKey);
+    const data = this.encryptionHandler.encryptMasterKey(masterKey, this.userId);
     const dataObject = data.map((val) => ({ value: val }));
 
     /**

@@ -42,14 +42,15 @@
       .fullScreenWrapper {
         display: flex;
         flex-direction: column;
-        height: 100vh;
+        height: 98vh;
         justify-content: center;
         align-items: center;
       }
       .spinner {
-        width: 40px;
-        height: 40px; 
+        width: 30px;
+        height: 30px; 
         position: relative;
+        margin-top: 8px;
       }
 
       .double-bounce1, .double-bounce2 {
@@ -92,8 +93,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
       <div class="fullScreenWrapper">
-        <object data="%PUBLIC_URL%/greylogo.svg" type="image/svg+xml">
-        </object>
+        <svg width="80" height="80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M74.087 36.793c.265.766-.152 1.6-.923 1.847L51.75 45.49c.41-2.07.26-4.212-.433-6.205a11.85 11.85 0 00-3.792-5.389l21.24-7.97a1.441 1.441 0 011.867.88l3.456 9.986v.001zM56.42 73.888a1.439 1.439 0 01-2.035-.341l-12.83-18.492a11.817 11.817 0 005.792-2.239 11.848 11.848 0 004.026-5.215l13.85 17.995a1.445 1.445 0 01-.29 2.045l-8.513 6.247zM9.22 27.172a1.44 1.44 0 011.853-.907l21.163 7.6a11.853 11.853 0 00-3.42 5.19 11.872 11.872 0 00-.257 6.59l-21.703-6.6a1.444 1.444 0 01-.95-1.837L9.22 27.172zm14.553 46.526a1.442 1.442 0 002.035-.342l12.83-18.492a11.817 11.817 0 01-5.793-2.238 11.85 11.85 0 01-4.026-5.215L14.97 65.406a1.447 1.447 0 00.29 2.045l8.512 6.245v.002z" fill="#CCC"/>
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M39.704 53.306a10.07 10.07 0 007.753-16.997 10.07 10.07 0 00-7.11-3.132 10.07 10.07 0 00-.643 20.13zm.241-7.547a2.519 2.519 0 10.162-5.032 2.517 2.517 0 00-.16 5.032h-.002z" fill="#BBB"/>
+          <path d="M40.184 6.95l-5.6 5.433a.648.648 0 00-.196.454l-.355 23.634c-.008.576.77 1.269 1.347 1.27 2.884.007 9.297.674 10.733.604.24-.012.23-.274.235-.516l.093-6.29a.645.645 0 00-.2-.48l-3.51-3.338a.648.648 0 01.014-.952l3.294-2.95a.648.648 0 00.013-.954l-3.23-3.049a.647.647 0 01.013-.955l3.634-3.228a.653.653 0 00.219-.474l.033-2.091a.647.647 0 00-.181-.461L41.1 6.965a.648.648 0 00-.916-.016z" fill="#BBB"/>
+        </svg>
         <div class="spinner">
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>

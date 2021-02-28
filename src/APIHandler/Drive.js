@@ -23,7 +23,7 @@ class Drive {
    * @param {fileLoadCallback} onFolderLoaded Callback to handle when folder loaded
    */
   getFolder = (onFolderLoaded) => {
-    const folderName = 'drivepasswordmanager2';
+    const folderName = 'PasswordKeeper';
 
     this.gapi.client.drive.files
       .list({
@@ -68,7 +68,7 @@ class Drive {
    * @param {fileLoadCallback} onFileLoaded Callback to handle when file is loaded
    */
   getSheetFile = (onFileLoaded) => {
-    const fileName = 'password-database-alpha';
+    const fileName = 'PasswordKeeper-database-alpha';
     this.gapi.client.drive.files
       .list({
         q: `name='${fileName}' and parents in '${this.folder_id}'`,
@@ -78,7 +78,7 @@ class Drive {
         if (res.result.files.length) {
           const fileUrl = res.result.files[0].webViewLink;
           const fileId = this.getFileIdFromUrl(fileUrl);
-          onFileLoaded(fileId);
+          onFileLoaded(fileId, this.authClient.getUser().getId());
         } else {
           this.createSheetFile(fileName, onFileLoaded);
         }
@@ -103,7 +103,7 @@ class Drive {
     }).then((res) => {
       const fileUrl = res.result.webViewLink;
       const fileId = this.getFileIdFromUrl(fileUrl);
-      onFileLoaded(fileId);
+      onFileLoaded(fileId, this.authClient.getUser().getId());
     });
   }
 
