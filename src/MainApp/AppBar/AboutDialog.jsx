@@ -13,8 +13,8 @@ const Transition = React.forwardRef((props, ref) => <Slide direction="up" ref={r
 export default ({ aboutOpen, toggleAboutOpen }) => (
   <Dialog fullScreen open={aboutOpen} onClose={toggleAboutOpen} TransitionComponent={Transition}>
     <Toolbar>
-      <Typography variant="h5" style={{ textAlign: 'center' }}>
-        <b>About PasswordKeeper</b>
+      <Typography variant="h5" style={{ textAlign: 'center', flexGrow: 1, marginLeft: 48 }}>
+        <b>About</b>
       </Typography>
       <IconButton edge="end" color="inherit" onClick={toggleAboutOpen} aria-label="close">
         <CloseIcon />

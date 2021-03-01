@@ -60,9 +60,8 @@ export default ({
     // Set loading state to loading
     onPasswordLoaded('loading');
 
-    try {
-      // Initialize the database with the given password
-      await database.initialize(password);
+    // Initialize the database with the given password
+    database.initialize(password).then(async () => {
       await database.insertAccount({
         name: 'PasswordManager',
         category: 'Linked Account',
@@ -71,12 +70,11 @@ export default ({
       });
       // notify that the password has been loaded
       onPasswordLoaded();
-    } catch (err) {
-      // In case of error reanable the buttons and set error message
+    }).catch((err) => {
       console.log(err);
       toggleEnabled();
-      setErrorMessage('Network Error. Try again later');
-    }
+      setErrorMessage('Error encrypting Password. Try again later');
+    });
   };
 
   const handleMouseDownPassword = (event) => {
@@ -178,7 +176,7 @@ export default ({
       </DialogContent>
       <DialogActions style={{ paddingRight: '24px' }}>
         <Button onClick={setMasterPassword} disabled={!enabled && password.length > 0} color="primary" variant="contained">
-          {!enabled && password.length > 0 ? 'Encrypting...' : 'Save'}
+          Save
         </Button>
       </DialogActions>
     </>

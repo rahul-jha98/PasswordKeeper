@@ -40,7 +40,7 @@ export default ({
   /**
    * Verify if the password user has entered is correct
    */
-  const verifyPassword = async () => {
+  const verifyPassword = () => {
     try {
       const isPasswordCorrect = database.verifyPassword(password);
       if (isPasswordCorrect) {
@@ -50,7 +50,7 @@ export default ({
       }
     } catch (err) {
       console.log(err);
-      setErrorMessage('Error verifying password. Try again later');
+      setErrorMessage('Password Entered is Incorrect');
     }
   };
   return (
