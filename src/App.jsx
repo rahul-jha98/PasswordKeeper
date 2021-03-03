@@ -48,7 +48,11 @@ class App extends React.Component {
       },
       (error) => {
         console.log(error);
-        if (error.details.includes('Cookies')) {
+        if (error.error && error.error === 'access_denied') {
+          this.setState({ toast: 'App cannot proceed since permission to access drive has been denied' });
+          return;
+        }
+        if (error.details && error.details.includes('Cookies')) {
           this.setState({ toast: 'Cookies are disabled. Google Sign In will not work.' });
         }
       },

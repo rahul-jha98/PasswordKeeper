@@ -39,6 +39,11 @@ class Drive {
           // If no folder is found we create a folder
           this.createFolder(folderName, onFolderLoaded);
         }
+      })
+      .catch((err) => {
+        if (err.status === 403) {
+          onFolderLoaded();
+        }
       });
   }
 

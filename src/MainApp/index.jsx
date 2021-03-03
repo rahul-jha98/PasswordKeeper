@@ -24,7 +24,13 @@ export default class MainApp extends React.Component {
   }
 
   componentDidMount = () => {
-    this.drive.getFolder(() => {
+    this.drive.getFolder((folder_id) => {
+      if (!folder_id) {
+        this.setState({ toast: 'App does not have permission to access drive. Signing out...' });
+        setTimeout(() => {
+          this.props.authHandler.signOutFromGoogle();
+        }, 2000);
+      }
       this.drive.getSheetFile(async (sheet_file_id, user_id) => {
         this.database.setFileId(sheet_file_id);
         this.database.setUserId(user_id);
