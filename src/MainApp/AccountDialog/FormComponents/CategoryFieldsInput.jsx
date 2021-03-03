@@ -92,14 +92,16 @@ const PasswordComponent = ({
         endAdornment={(
           <InputAdornment position="end">
             {variant === 'filled' ? (
-              <IconButton
-                aria-label="copy text"
-                onClick={() => { navigator.clipboard.writeText(text); showToast('Copied to clipboard'); }}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                <CopyIcon />
-              </IconButton>
+              <Tooltip title="Copy">
+                <IconButton
+                  aria-label="copy text"
+                  onClick={() => { navigator.clipboard.writeText(text); showToast('Copied to clipboard'); }}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  <CopyIcon />
+                </IconButton>
+              </Tooltip>
             ) : null}
 
             <IconButton

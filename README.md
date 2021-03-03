@@ -13,7 +13,7 @@ For storing all the encrypted passwords a Google Sheet stored in your Google Dri
 But the benefit of using Google Sheet is that it completely removes the need for a backend. Since, Google provides REST API to manipulate Google Sheet the web-app could directly interact with data stored in Google Sheet.
 
 ## ⚡ Features
-With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Few of the reasons is mentioned below - 
+With so many password manager already existing, one might wonder why should anyone choose PasswordKeeper. Here are a few reasons -
 - **No Backend** - PasswordKeeper is a standalone web app without any backend server. The data you enter is saved directly in your Google Drive. 
 - **Web Based** - While there are many password managers that do not have a backend but rather store the passwords in the user's mobile device itself. The limitation of this approach is that if you don't have your mobile near you, you cannot access your passwords.
 - **Free to use**
@@ -42,4 +42,29 @@ With so many password manager already existing, one might wonder why should anyo
 <a href="https://material-ui.com/" target="_blank"> <img align="left" alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/README_icons/main/language_and_tools/square/material-ui/material-ui.svg"></a>
 <a href="https://github.com/rahul-jha98/sheets-database" target="_blank"> <img alt="Material UI" height ="48px" src="https://raw.githubusercontent.com/rahul-jha98/sheets-database/main/docs/assets/imgs/logo.svg"></a>
 
+## 🔧 Setup Local Environment
 
+_Make sure you have [Yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)_
+
+1. Clone the repository
+
+```
+git clone https://github.com/rahul-jha98/PasswordKeeper.git
+cd PasswordKeeper
+```
+
+2. Install dependencies
+
+```
+yarn install
+```
+
+3. Create a `.env` file with the contents of `.env.sample`. Go to https://console.cloud.google.com/apis/dashboard and create a API key for Drive API and OAuth Consent Screen Client ID. Set these values in `.env` file.
+
+4. Run the start script using
+
+```
+yarn start
+```
+
+Application should be up and running at [http://localhost:3000](http://localhost:3000).
