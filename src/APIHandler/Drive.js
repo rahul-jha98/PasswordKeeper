@@ -73,7 +73,7 @@ class Drive {
    * @param {fileLoadCallback} onFileLoaded Callback to handle when file is loaded
    */
   getSheetFile = (onFileLoaded) => {
-    const fileName = 'PasswordKeeper-database-alpha';
+    const fileName = 'PasswordKeeper-database';
     this.gapi.client.drive.files
       .list({
         q: `name='${fileName}' and parents in '${this.folder_id}'`,
