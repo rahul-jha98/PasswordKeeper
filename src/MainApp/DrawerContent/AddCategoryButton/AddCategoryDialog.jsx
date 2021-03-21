@@ -70,6 +70,9 @@ export default ({ open, toggleOpen }) => {
   const closeDialog = () => {
     // First call toggle open to hide the dialog
     toggleOpen();
+
+    // Remove all error from Dialog when its get close
+    setErrorMessage('')
     // Wait for 300ms for close animation to finish and
     // then reset the fields to initialCategoryFields for
     // next time
