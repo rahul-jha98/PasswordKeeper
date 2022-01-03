@@ -72,7 +72,7 @@ export default ({ open, toggleOpen }) => {
     toggleOpen();
 
     // Remove all error from Dialog when its get close
-    setErrorMessage('')
+    setErrorMessage('');
     // Wait for 300ms for close animation to finish and
     // then reset the fields to initialCategoryFields for
     // next time
