@@ -62,7 +62,7 @@ export default class EncryptionHandler {
     const textSize = text.length;
     const saltSize = salt.length;
     for (let i = 0; i < textSize; i += 1) {
-      const ascii = text.codePointAt(0);
+      const ascii = text.codePointAt(i);
       if (ascii % 2 === 1) {
         saltedText += salt[ascii % saltSize];
       } else {
